@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<config xmlns="http://www.hybris.com/cockpit/config"
+        xmlns:y="http://www.hybris.com/cockpit/config/hybris"
+        xmlns:explorer-tree="http://www.hybris.com/cockpitng/config/explorertree"
+        xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea"
+        xmlns:list-view="http://www.hybris.com/cockpitng/component/listView"
+        xmlns:simple-search="http://www.hybris.com/cockpitng/config/simplesearch"
+        xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch"
+        xmlns:wz="http://www.hybris.com/cockpitng/config/wizard-config">
+
+    <context component="explorer-tree" merge-by="module">
+        <explorer-tree:explorer-tree>
+            <explorer-tree:navigation-node id="nuvei.navigation.node">
+                <explorer-tree:type-node code="NuveiMerchantConfiguration" id="nuvei.merchantconfig.node"/>
+                <explorer-tree:type-node code="NuveiDirectMerchantNotification" id="nuvei.notifications.node"/>
+                <explorer-tree:type-node code="NuveiPaymentMethod" id="nuvei.paymentmethod.node"/>
+                 <explorer-tree:navigation-node id="nuvei.payment.attr.navigation.node">
+                    <explorer-tree:type-node code="NuveiPayButton" id="nuvei.paybutton.node"/>
+                    <explorer-tree:type-node code="NuveiLogLevel" id="nuvei.loglevel.node"/>
+                    <explorer-tree:type-node code="NuveiEnv" id="nuvei.nuveienv.node"/>
+                </explorer-tree:navigation-node>
+            <explorer-tree:navigation-node id="nuvei.cronjobs.navigation.node">
+                <explorer-tree:type-node code="NuveiCleanOldNotificationsCronJob" id="nuvei.nuveiCleanOldNotificationsCronJob.node"/>
+                <explorer-tree:type-node code="NuveiProcessNotificationsCronJob" id="nuvei.nuveiProcessNotificationsCronJob.node"/>
+                <explorer-tree:type-node code="NuveiMerchantSyncCronjob" id="nuvei.nuveiMerchantSyncCronjob.node"/>
+            </explorer-tree:navigation-node>
+            <explorer-tree:type-node code="NuveiI18nLabel" id="nuvei.labels.node"/>
+            </explorer-tree:navigation-node>
+        </explorer-tree:explorer-tree>
+    </context>
+
+    <context component="cseditorareaactions" type="Order" merge-by="type">
+        <y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+            <y:group qualifier="common" merge-mode="merge">
+                <y:label>actiongroup.common</y:label>
+                <y:action action-id="de.hybris.ordermanagementbackoffice.actions.order.manualpaymentcaptureaction"
+                          property="currentObject" merge-mode="remove"/>
+                <y:action action-id="de.hybris.ordermanagementbackoffice.actions.order.cancelorderaction"
+                          property="currentObject" merge-mode="remove"/>
+                <y:action action-id="com.nuvei.backoffice.widgets.actions.nuveimanualcapturepaymentaction"
+                          property="currentObject" merge-mode="append" position="3"/>
+                <y:action action-id="com.nuvei.backoffice.widgets.actions.nuveicancelorderaction"
+                          property="currentObject" merge-mode="append" position="1"/>
+            </y:group>
+        </y:actions>
+    </context>
+
+    <context type="NuveiEnv" component="base" merge-by="type" parent="EnumerationValue">
+        <y:base>
+            <y:labels>
+                <y:label>name</y:label>
+            </y:labels>
+        </y:base>
+    </context>
+
+    <context type="NuveiHashAlgorithm" component="base" merge-by="type" parent="EnumerationValue">
+        <y:base>
+            <y:labels>
+                <y:label>name</y:label>
+            </y:labels>
+        </y:base>
+    </context>
+
+    <context type="NuveiPayButton" component="base" merge-by="type" parent="EnumerationValue">
+        <y:base>
+            <y:labels>
+                <y:label>name</y:label>
+            </y:labels>
+        </y:base>
+    </context>
+
+    <context type="NuveiLogLevel" component="base" merge-by="type" parent="EnumerationValue">
+        <y:base>
+            <y:labels>
+                <y:label>name</y:label>
+            </y:labels>
+        </y:base>
+    </context>
+
+    <context type="NuveiBrand" component="base" merge-by="type" parent="EnumerationValue">
+        <y:base>
+            <y:labels>
+                <y:label>name</y:label>
+            </y:labels>
+        </y:base>
+    </context>
+
+    <context type="NuveiCardProduct" component="base" merge-by="type" parent="EnumerationValue">
+        <y:base>
+            <y:labels>
+                <y:label>name</y:label>
+            </y:labels>
+        </y:base>
+    </context>
+
+    <context type="NuveiCardType" component="base" merge-by="type" parent="EnumerationValue">
+        <y:base>
+            <y:labels>
+                <y:label>name</y:label>
+            </y:labels>
+        </y:base>
+    </context>
+
+    <context type="NuveiI18nLabel" component="base" merge-by="type" parent="EnumerationValue">
+        <y:base>
+            <y:labels>
+                <y:label>key</y:label>
+            </y:labels>
+        </y:base>
+    </context>
+
+
+    <!-- NuveiMerchantConfiguration -->
+    <context type="NuveiMerchantConfiguration">
+        <context component="base" merge-by="type">
+            <y:base>
+                <y:labels>
+                    <y:label>code</y:label>
+                </y:labels>
+            </y:base>
+        </context>
+
+        <context component="listview" merge-by="type">
+            <list-view:list-view refresh-after-object-creation="true">
+                <list-view:column qualifier="code"/>
+                <list-view:column qualifier="merchantId"/>
+                <list-view:column qualifier="merchantSiteId"/>
+            </list-view:list-view>
+        </context>
+
+        <context component="simple-search">
+            <simple-search:simple-search>
+                <simple-search:field name="code"/>
+                <simple-search:field name="merchantId"/>
+                <simple-search:field name="merchantSiteId"/>
+                <simple-search:field name="env"/>
+                <simple-search:sort-field name="code" asc="true"/>
+            </simple-search:simple-search>
+        </context>
+
+        <context component="advanced-search" merge-by="type"
+                 parent="GenericItem">
+            <advanced-search:advanced-search>
+                <advanced-search:field-list>
+                    <advanced-search:field name="code"/>
+                    <advanced-search:field name="merchantId"/>
+                    <advanced-search:field name="merchantSiteId"/>
+                    <advanced-search:field name="env"/>
+                </advanced-search:field-list>
+            </advanced-search:advanced-search>
+        </context>
+
+        <context component="editor-area" merge-by="type">
+            <editorArea:editorArea>
+                <editorArea:essentials>
+                    <editorArea:essentialSection name="hmc.essential">
+                        <editorArea:attribute qualifier="code"/>
+                        <editorArea:attribute qualifier="merchantId"/>
+                        <editorArea:attribute qualifier="merchantSiteId"/>
+                        <editorArea:attribute qualifier="merchantSecretKey"/>
+                    </editorArea:essentialSection>
+                </editorArea:essentials>
+                <editorArea:tab name="tab.nuvei.general" position="0">
+                    <editorArea:section name="sec.nuvei.properties">
+                        <editorArea:attribute qualifier="env"/>
+                        <editorArea:attribute qualifier="logLevel"/>
+                        <editorArea:attribute qualifier="savePM"/>
+                        <editorArea:attribute qualifier="payButton"/>
+                        <editorArea:attribute qualifier="alwaysCollectCvv" readonly="true"/>
+                        <editorArea:attribute qualifier="prePopulateFullName"/>
+                    </editorArea:section>
+                </editorArea:tab>
+                <editorArea:tab name="tab.configuration.nuvei.allow.deny.settings">
+                    <editorArea:section name="sec.configuration.nuvei.payments">
+                        <editorArea:attribute qualifier="filterType"/>
+                        <editorArea:attribute qualifier="paymentMethods" readonly="true">
+                            <editorArea:editor-parameter>
+                                <editorArea:name>referenceSearchCondition_merchantConfiguration</editorArea:name>
+                                <editorArea:value>{parentObject}</editorArea:value>
+                            </editorArea:editor-parameter>
+                        </editorArea:attribute>
+                        <editorArea:attribute qualifier="allowListPaymentMethods">
+                            <editorArea:editor-parameter>
+                                <editorArea:name>referenceSearchCondition_merchantConfiguration</editorArea:name>
+                                <editorArea:value>{parentObject}</editorArea:value>
+                            </editorArea:editor-parameter>
+                        </editorArea:attribute>
+                        <editorArea:attribute qualifier="denyListPaymentMethods">
+                            <editorArea:editor-parameter>
+                                <editorArea:name>referenceSearchCondition_merchantConfiguration</editorArea:name>
+                                <editorArea:value>{parentObject}</editorArea:value>
+                            </editorArea:editor-parameter>
+                        </editorArea:attribute>
+                    </editorArea:section>
+                </editorArea:tab>
+                <editorArea:tab name="tab.nuvei.blocked.cards" position="1">
+                    <editorArea:section name="sec.nuvei.blocked.cards" columns="4">
+                        <editorArea:attribute qualifier="blockedCards"/>
+                    </editorArea:section>
+                </editorArea:tab>
+                <editorArea:tab name="hmc.administration">
+                    <editorArea:section name="hmc.common" position="1">
+                        <editorArea:attribute qualifier="serverHost"/>
+                        <editorArea:attribute qualifier="alwaysCollectCvv" readonly="true"/>
+                    </editorArea:section>
+                </editorArea:tab>
+            </editorArea:editorArea>
+        </context>
+
+        <context component="create-wizard" merge-by="module">
+            <wz:flow id="NuveiMerchantConfigurationWizard" title="create.title(ctx.TYPE_CODE)" merge-mode="append">
+                <wz:prepare id="itemPrepare">
+                    <wz:initialize property="newObject" type="ctx.TYPE_CODE"/>
+                </wz:prepare>
+                <wz:step id="step1" label="flow.allmanadatory" merge-mode="append">
+                    <wz:content id="step1.content" merge-mode="append">
+                        <wz:property-list root="newObject" merge-mode="append">
+                            <wz:property qualifier="code"/>
+                            <wz:property qualifier="merchantId"/>
+                            <wz:property qualifier="merchantSiteId"/>
+                            <wz:property qualifier="merchantSecretKey"/>
+                            <wz:property qualifier="env"/>
+                            <wz:property qualifier="logLevel"/>
+                            <wz:property qualifier="savePM"/>
+                            <wz:property qualifier="payButton"/>
+                        </wz:property-list>
+                    </wz:content>
+                </wz:step>
+            </wz:flow>
+        </context>
+        <context merge-by="type" component="listviewactions">
+            <y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+                <y:group qualifier="common">
+                    <y:label>actionNameMassive</y:label>
+                    <y:action action-id="com.nuvei.backoffice.widgets.actions.nuveisynchpaymentmethodsbymerchantsaction"
+                              property="selectedObjects"/>
+                </y:group>
+            </y:actions>
+        </context>
+
+        <context component="editorareaactions" merge-by="type">
+            <y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+                <y:group qualifier="common">
+                    <y:label>actiongroup.common</y:label>
+                    <y:action action-id="com.nuvei.backoffice.widgets.actions.nuveisynchpaymentmethodsbysinglemerchantaction"
+                              property="currentObject"/>
+                    <y:action action-id="com.hybris.cockpitng.action.delete" property="currentObject"/>
+                </y:group>
+            </y:actions>
+        </context>
+    </context>
+
+    <context type="NuveiBlockedCards">
+        <context component="base" merge-by="type">
+            <y:base>
+                <y:labels>
+                    <y:label>code</y:label>
+                </y:labels>
+            </y:base>
+        </context>
+
+        <context component="create-wizard" merge-by="module">
+            <wz:flow id="NuveiBlockedCardWizard" title="create.title(ctx.TYPE_CODE)" merge-mode="replace">
+                <wz:prepare id="itemPrepare">
+                    <wz:initialize property="newObject" type="ctx.TYPE_CODE"/>
+                </wz:prepare>
+                <wz:step id="step1" label="flow.allmanadatory" merge-mode="append">
+                    <wz:content id="step1.content" merge-mode="append">
+                        <wz:property-list root="newObject" merge-mode="replace">
+                            <wz:property qualifier="code" position="0"/>
+                            <wz:property qualifier="brand" position="1"/>
+                            <wz:property qualifier="cardProduct" position="2"/>
+                            <wz:property qualifier="cardType" position="3"/>
+                            <wz:property qualifier="country" position="4"/>
+                        </wz:property-list>
+                    </wz:content>
+                    <wz:navigation id="step1.navigation">
+                        <wz:cancel/>
+                        <wz:done
+                                visible="newObject.code != null and (newObject.brand.size() > 0 or newObject.cardProduct.size() > 0 or newObject.cardType.size() > 0 or newObject.country.size() > 0)">
+                            <wz:save property="newObject"/>
+                        </wz:done>
+                    </wz:navigation>
+                </wz:step>
+            </wz:flow>
+        </context>
+    </context>
+
+    <context type="NuveiDirectMerchantNotification">
+        <context component="base" merge-by="type">
+            <y:base>
+                <y:labels>
+                    <y:label>id + ' ' + transactionType</y:label>
+                </y:labels>
+            </y:base>
+        </context>
+
+        <context component="listview" merge-by="type">
+            <list-view:list-view refresh-after-object-creation="true">
+                <list-view:column qualifier="merchantId"/>
+                <list-view:column qualifier="merchantSiteId"/>
+                <list-view:column qualifier="pppTransactionId"/>
+                <list-view:column qualifier="transactionId"/>
+                <list-view:column qualifier="transactionType"/>
+                <list-view:column qualifier="clientUniqueId"/>
+            </list-view:list-view>
+        </context>
+
+        <context type="NuveiDirectMerchantNotification" component="editor-area" merge-by="type">
+            <editorArea:editorArea>
+                <editorArea:essentials>
+                    <editorArea:essentialSection name="hmc.essential">
+                        <editorArea:attribute qualifier="merchantId"/>
+                        <editorArea:attribute qualifier="merchantSiteId"/>
+                        <editorArea:attribute qualifier="pppTransactionId"/>
+                        <editorArea:attribute qualifier="transactionId"/>
+                        <editorArea:attribute qualifier="transactionType"/>
+                        <editorArea:attribute qualifier="status"/>
+                        <editorArea:attribute qualifier="pppStatus"/>
+                        <editorArea:attribute qualifier="clientUniqueId"/>
+                        <editorArea:attribute qualifier="clientRequestId"/>
+                    </editorArea:essentialSection>
+                </editorArea:essentials>
+                <editorArea:tab name="tab.nuvei.general" position="0">
+                    <editorArea:section name="sec.nuvei.properties">
+                        <editorArea:attribute qualifier="id"/>
+                        <editorArea:attribute qualifier="merchantUniqueId"/>
+                        <editorArea:attribute qualifier="paymentMethod"/>
+                        <editorArea:attribute qualifier="relatedTransactionId"/>
+                        <editorArea:attribute qualifier="totalAmount"/>
+                        <editorArea:attribute qualifier="currency"/>
+                        <editorArea:attribute qualifier="finalFraudDecision"/>
+                        <editorArea:attribute qualifier="systemDecision"/>
+                        <editorArea:attribute qualifier="processed"/>
+                        <editorArea:attribute qualifier="defective"/>
+                        <editorArea:attribute qualifier="defectiveReason"/>
+                        <editorArea:attribute qualifier="notified"/>
+                        <editorArea:attribute qualifier="stringifiedRawNotification" readonly="true">
+                            <editorArea:editor-parameter>
+                                <editorArea:name>rows</editorArea:name>
+                                <editorArea:value>10</editorArea:value>
+                            </editorArea:editor-parameter>
+                        </editorArea:attribute>
+                    </editorArea:section>
+                </editorArea:tab>
+            </editorArea:editorArea>
+        </context>
+
+        <context component="simple-search">
+            <simple-search:simple-search>
+                <simple-search:field name="merchantId"/>
+                <simple-search:field name="merchantSiteId"/>
+                <simple-search:field name="pppTransactionId"/>
+                <simple-search:field name="transactionId"/>
+                <simple-search:field name="transactionType"/>
+                <simple-search:field name="status"/>
+                <simple-search:field name="pppStatus"/>
+                <simple-search:field name="clientUniqueId"/>
+                <simple-search:sort-field name="merchantId" asc="true"/>
+            </simple-search:simple-search>
+        </context>
+
+        <context component="advanced-search" merge-by="type" parent="GenericItem">
+            <advanced-search:advanced-search>
+                <advanced-search:field-list>
+                    <advanced-search:field name="merchantId"/>
+                    <advanced-search:field name="merchantSiteId"/>
+                    <advanced-search:field name="pppTransactionId"/>
+                    <advanced-search:field name="transactionId"/>
+                    <advanced-search:field name="transactionType"/>
+                    <advanced-search:field name="status"/>
+                    <advanced-search:field name="pppStatus"/>
+                    <advanced-search:field name="clientUniqueId"/>
+                </advanced-search:field-list>
+            </advanced-search:advanced-search>
+        </context>
+    </context>
+
+    <context type="NuveiI18nLabel">
+        <context component="base" merge-by="type">
+            <y:base>
+                <y:labels>
+                    <y:label>key</y:label>
+                </y:labels>
+            </y:base>
+        </context>
+
+        <context component="listview" merge-by="type">
+            <list-view:list-view refresh-after-object-creation="true">
+                <list-view:column qualifier="key"/>
+                <list-view:column qualifier="value"/>
+                <list-view:column qualifier="nuveiMerchantConfiguration"/>
+            </list-view:list-view>
+        </context>
+
+        <context component="editor-area" merge-by="type">
+            <editorArea:editorArea>
+                <editorArea:tab name="hmc.properties" merge-mode="type">
+                    <editorArea:section name="hmc.common">
+                        <editorArea:attribute qualifier="key"/>
+                        <editorArea:attribute qualifier="value"/>
+                        <editorArea:attribute qualifier="nuveiMerchantConfiguration"/>
+                    </editorArea:section>
+                </editorArea:tab>
+            </editorArea:editorArea>
+        </context>
+
+        <context component="create-wizard" merge-by="module">
+            <wz:flow id="NuveiI18nLabelWizard" title="create.title(ctx.TYPE_CODE)" merge-mode="replace">
+                <wz:prepare id="itemPrepare">
+                    <wz:initialize property="newObject" type="ctx.TYPE_CODE"/>
+                </wz:prepare>
+                <wz:step id="step1" label="flow.allmanadatory" merge-mode="append">
+                    <wz:content id="step1.content" merge-mode="append">
+                        <wz:property-list root="newObject" merge-mode="replace">
+                            <wz:property qualifier="key" position="0"/>
+                            <wz:property qualifier="value" position="1"/>
+                            <wz:property qualifier="nuveiMerchantConfiguration" position="2"/>
+                        </wz:property-list>
+                    </wz:content>
+                </wz:step>
+            </wz:flow>
+        </context>
+
+        <context  component="simple-search">
+            <simple-search:simple-search>
+                <simple-search:field name="key"/>
+                <simple-search:field name="value"/>
+                <simple-search:sort-field name="key" asc="true"/>
+            </simple-search:simple-search>
+        </context>
+
+        <context  component="advanced-search" merge-by="type" parent="GenericItem">
+            <advanced-search:advanced-search>
+                <advanced-search:field-list>
+                    <advanced-search:field name="key"/>
+                    <advanced-search:field name="value"/>
+                    <advanced-search:field name="nuveiMerchantConfiguration"/>
+                </advanced-search:field-list>
+            </advanced-search:advanced-search>
+        </context>
+    </context>
+
+    <context type="NuveiPaymentMethod">
+        <context component="base" merge-by="type">
+            <y:base>
+                <y:labels>
+                    <y:label>( displayName ?: '' ) + ' ['+ id +'] '</y:label>
+                </y:labels>
+            </y:base>
+        </context>
+
+        <context component="listview" merge-by="type">
+            <list-view:list-view refresh-after-object-creation="true">
+                <list-view:column qualifier="id"/>
+                <list-view:column qualifier="displayName"/>
+                <list-view:column qualifier="merchantConfiguration"/>
+            </list-view:list-view>
+        </context>
+
+        <context component="simple-search">
+            <simple-search:simple-search>
+                <simple-search:field name="id"/>
+                <simple-search:sort-field name="id" asc="true"/>
+            </simple-search:simple-search>
+        </context>
+
+        <context component="advanced-search" merge-by="type"
+                 parent="GenericItem">
+            <advanced-search:advanced-search>
+                <advanced-search:field-list>
+                    <advanced-search:field name="id"/>
+                    <advanced-search:field name="merchantConfiguration"/>
+                </advanced-search:field-list>
+            </advanced-search:advanced-search>
+        </context>
+
+        <context component="editor-area" merge-by="type">
+            <editorArea:editorArea>
+                <editorArea:essentials>
+                    <editorArea:essentialSection name="hmc.essential">
+                        <editorArea:attribute qualifier="id" readonly="true"/>
+                        <editorArea:attribute qualifier="displayName" readonly="true"/>
+                        <editorArea:attribute qualifier="merchantConfiguration" readonly="true"/>
+                    </editorArea:essentialSection>
+                </editorArea:essentials>
+                <editorArea:tab name="hmc.administration" position="99">
+                    <editorArea:section name="hmc.section.cronjob.additionaloptions">
+                        <editorArea:attribute qualifier="merchantConfigurationAllowListed" readonly="true"/>
+                        <editorArea:attribute qualifier="merchantConfigurationDenyListed" readonly="true"/>
+                    </editorArea:section>
+                </editorArea:tab>
+            </editorArea:editorArea>
+        </context>
+
+        <context component="listviewactions" merge-by="type">
+            <y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+                <y:group qualifier="common">
+                    <y:label>actiongroup.common</y:label>
+                    <y:action action-id="com.nuvei.backoffice.widgets.actions.nuveisynchpaymentmethodsaction"
+                              property="selectedObjects"/>
+                </y:group>
+            </y:actions>
+        </context>
+    </context>
+
+    <context type="CMSSite">
+        <context component="editor-area" type="CMSSite" merge-by="type">
+            <editorArea:editorArea>
+                <editorArea:tab name="tab.configuration.nuvei">
+                    <editorArea:section name="sec.configuration.nuvei.merchant.section">
+                        <editorArea:attribute qualifier="nuveiMerchantConfiguration"/>
+                    </editorArea:section>
+                </editorArea:tab>
+            </editorArea:editorArea>
+        </context>
+    </context>
+
+    <context type="AbstractOrder">
+        <context component="editor-area" merge-by="module">
+            <context merge-by="module" component="editor-area">
+                <editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea">
+                    <editorArea:tab name="tab.nuvei.order" position="90">
+                        <editorArea:section name="sec.nuvei.order.properties">
+                            <editorArea:attribute qualifier="clientUniqueId"/>
+                        </editorArea:section>
+                        <editorArea:section name="sec.nuvei.order.api.payload.section">
+                            <editorArea:attribute qualifier="requestsPayload" readonly="true"/>
+                            <editorArea:attribute qualifier="responsesPayload" readonly="true"/>
+                        </editorArea:section>
+                    </editorArea:tab>
+                </editorArea:editorArea>
+            </context>
+        </context>
+    </context>
+
+    <context type="NuveiPaymentInfo">
+        <context component="editor-area" merge-by="type" parent="PaymentInfo">
+            <editorArea:editorArea>
+                <editorArea:tab name="tab.nuvei.payment.info.properties" position="0">
+                    <editorArea:section name="sec.nuvei.payment.info.properties">
+                        <editorArea:attribute qualifier="merchantId" readonly="true"/>
+                        <editorArea:attribute qualifier="transactionId" readonly="true"/>
+                        <editorArea:attribute qualifier="paymentMethod" readonly="true"/>
+                        <editorArea:attribute qualifier="transactionType" readonly="true"/>
+                        <editorArea:attribute qualifier="maskedCardNumber" readonly="true"/>
+                        <editorArea:attribute qualifier="expYear" readonly="true"/>
+                        <editorArea:attribute qualifier="expMonth" readonly="true"/>
+                    </editorArea:section>
+                </editorArea:tab>
+            </editorArea:editorArea>
+        </context>
+    </context>
+
+    <context component="cseditorareaactions" type="ReturnRequest" merge-by="type">
+        <y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+            <y:group qualifier="common" merge-mode="merge">
+                <y:label>actiongroup.common</y:label>
+                <y:action action-id="de.hybris.ordermanagementbackoffice.actions.returns.approvereturnaction"
+                          property="currentObject"/>
+            </y:group>
+        </y:actions>
+    </context>
+
+</config>

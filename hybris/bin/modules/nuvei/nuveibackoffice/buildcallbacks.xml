@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="nuveibackoffice_buildcallbacks">
+    	
+    <property name="nuveibackofficeWebFragmentSrc" value="${ext.nuveibackoffice.path}/resources/web-fragment.xml"/>
+    	
+    <property name="nuveibackofficeWebFragmentDestJar" value="${ext.backoffice.path}/web/webroot/WEB-INF/lib/webfragmentExt_nuveibackoffice.jar"/>
+
+    <macrodef name="nuveibackoffice_after_clean">
+        		
+        <sequential>
+            			
+            <nuveibackoffice_remove_web_fragment/>
+            		
+        </sequential>
+        	
+    </macrodef>
+
+    <macrodef name="nuveibackoffice_before_build">
+        <sequential>
+            <register_sass_extension extensionname="nuveibackoffice"/>
+            <register_sass_extension extensionname="nuveibackoffice" resources="resources" destination=""/>
+        </sequential>
+    </macrodef>
+    	
+    <macrodef name="nuveibackoffice_after_build">
+        		
+        <sequential>
+            			
+            <nuveibackoffice_remove_web_fragment/>
+            			
+            <nuveibackoffice_create_web_fragment/>
+            		
+        </sequential>
+        	
+    </macrodef>
+    	
+    <macrodef name="nuveibackoffice_remove_web_fragment">
+        		
+        <sequential>
+            			
+            <if>
+                				
+                <available file="${nuveibackofficeWebFragmentDestJar}"/>
+                				
+                <then>
+                    					
+                    <delete file="${nuveibackofficeWebFragmentDestJar}"/>
+                    				
+                </then>
+                			
+            </if>
+            		
+        </sequential>
+        	
+    </macrodef>
+    	
+    <macrodef name="nuveibackoffice_create_web_fragment">
+        		
+        <sequential>
+            			
+            <if>
+                				
+                <available file="${nuveibackofficeWebFragmentSrc}"/>
+                				
+                <then>
+                    					
+                    <sequential>
+                        						
+                        <jar destfile="${nuveibackofficeWebFragmentDestJar}">
+                            							
+                            <metainf file="${nuveibackofficeWebFragmentSrc}"/>
+                            						
+                        </jar>
+                        					
+                    </sequential>
+                    				
+                </then>
+                			
+            </if>
+            		
+        </sequential>
+        	
+    </macrodef>
+    	
+    <patternset id="nuveibackoffice.localization.pattern">
+        		
+        <!-- core and hmc  -->
+        		
+        <include name="**/*locales*_en.properties"/>
+        		
+        <exclude name="**/hmc/web/webroot/WEB-INF/classes/**/*"/>
+        		
+        <exclude name="**/unittest/**/*"/>
+        		
+        <!-- cockpit (ng) -->
+        		
+        <include name="**/i3-label_en.properties"/>
+        		
+        <include name="**/labels_en.properties"/>
+        		
+        <!-- messages -->
+        		
+        <include name="**/*messages_en.properties"/>
+        		
+        <include name="**/*messages.properties"/>
+        		
+        <!-- frontend properties files in WEB-INF/messages folder -->
+        		
+        <include name="**/WEB-INF/messages/*_en.properties"/>
+        		
+        <!-- csv and impex -->
+        		
+        <include name="**/*_en.csv"/>
+        		
+        <include name="**/*_en.impex"/>
+        		
+        <include name="**/lang-en.properties"/>
+        		
+        <!-- email localizations from yacceleratorcore -->
+        		
+        <include name="resources/**/messages/*_en.properties"/>
+        		
+        <!-- include validation messages -->
+        		
+        <include name="resources/**/ValidationMessages.properties"/>
+        	
+    </patternset>
+    	
+    
+    
+</project>

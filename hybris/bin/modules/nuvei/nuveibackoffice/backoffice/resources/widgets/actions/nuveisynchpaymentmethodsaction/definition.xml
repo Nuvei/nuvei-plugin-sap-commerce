@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<action-definition id="com.nuvei.backoffice.widgets.actions.nuveisynchpaymentmethodsaction"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/action-definition.xsd">
+
+    <name>Synchronizes all payment methods from all merchants</name>
+    <description>>Synchronizes all payment methods from all merchants</description>
+    <author>Nuvei</author>
+    <version>1.0</version>
+
+    <actionClassName>com.nuvei.backoffice.widgets.actions.NuveiSynchPaymentMethodsAction</actionClassName>
+
+    <inputType>java.lang.Object</inputType>
+    <outputType>java.lang.Object</outputType>
+
+    <iconUri>icons/icon_action_sync_default.png</iconUri>
+    <iconDisabledUri>icons/icon_action_sync_disabled.png</iconDisabledUri>
+    <iconHoverUri>icons/icon_action_sync_hover.png</iconHoverUri>
+</action-definition>

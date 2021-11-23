@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="items.xsd">
+
+    <enumtypes>
+        <enumtype code="OrderStatus" autocreate="false" generate="false" dynamic="true">
+            <value code="CAPTURE_STARTED"/>
+            <value code="CAPTURE_PENDING"/>
+            <value code="PENDING_AUTHORIZATION"/>
+            <value code="CAPTURE_WAITING"/>
+            <value code="VOID_STARTED"/>
+            <value code="VOIDED"/>
+        </enumtype>
+    </enumtypes>
+
+    <itemtypes>
+        <itemtype code="NuveiVoidProcess" extends="OrderProcess">
+        </itemtype>
+    </itemtypes>
+</items>

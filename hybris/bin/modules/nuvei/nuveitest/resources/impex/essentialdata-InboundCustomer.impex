@@ -1,0 +1,29 @@
+INSERT_UPDATE IntegrationObject; code[unique = true]; integrationType(code)
+                               ; InboundCustomer    ; INBOUND
+
+INSERT_UPDATE IntegrationObjectItem; integrationObject(code)[unique = true]; code[unique = true]; type(code); root[default = false]; itemTypeMatch(code)
+                                   ; InboundCustomer	                   ; Country 	        ; Country 	; 	                   ; ALL_SUB_AND_SUPER_TYPES ;
+                                   ; InboundCustomer	                   ; Address 	        ; Address 	; 	                   ; ALL_SUB_AND_SUPER_TYPES ;
+                                   ; InboundCustomer	                   ; Title   	        ; Title   	; 	                   ; ALL_SUB_AND_SUPER_TYPES ;
+                                   ; InboundCustomer	                   ; Customer	        ; Customer	; true	               ; ALL_SUB_AND_SUPER_TYPES ;
+
+INSERT_UPDATE IntegrationObjectItemAttribute; integrationObjectItem(integrationObject(code), code)[unique = true]; attributeName[unique = true]; attributeDescriptor(enclosingType(code), qualifier); returnIntegrationObjectItem(integrationObject(code), code); unique[default = false]; autoCreate[default = false]
+                                            ; InboundCustomer:Country 	                                         ; isocode             	       ; Country:isocode             	                    ;                        	                                ; true	                 ;
+                                            ; InboundCustomer:Address 	                                         ; town                	       ; Address:town                	                    ;                        	                                ; 	                     ;
+                                            ; InboundCustomer:Address 	                                         ; firstname           	       ; Address:firstname           	                    ;                        	                                ; true	                 ;
+                                            ; InboundCustomer:Address 	                                         ; postalcode          	       ; Address:postalcode          	                    ;                        	                                ; 	                     ;
+                                            ; InboundCustomer:Address 	                                         ; title               	       ; Address:title               	                    ; InboundCustomer:Title  	                                ; 	                     ;
+                                            ; InboundCustomer:Address 	                                         ; country             	       ; Address:country             	                    ; InboundCustomer:Country	                                ; 	                     ;
+                                            ; InboundCustomer:Address 	                                         ; line1               	       ; Address:line1               	                    ;                        	                                ; 	                     ;
+                                            ; InboundCustomer:Address 	                                         ; lastname            	       ; Address:lastname            	                    ;                        	                                ; true	                 ;
+                                            ; InboundCustomer:Address 	                                         ; visibleInAddressBook	       ; Address:visibleInAddressBook	                    ;                        	                                ; 	                     ;
+                                            ; InboundCustomer:Address 	                                         ; shippingAddress     	       ; Address:shippingAddress     	                    ;                        	                                ; 	                     ;
+                                            ; InboundCustomer:Title   	                                         ; code                	       ; Title:code                  	                    ;                        	                                ; true	                 ;
+                                            ; InboundCustomer:Customer	                                         ; uid                 	       ; Customer:uid                	                    ;                        	                                ; true	                 ;
+                                            ; InboundCustomer:Customer	                                         ; name                	       ; Customer:name               	                    ;                        	                                ; 	                     ;
+                                            ; InboundCustomer:Customer	                                         ; customerID          	       ; Customer:customerID         	                    ;                        	                                ; 	                     ;
+                                            ; InboundCustomer:Customer	                                         ; addresses           	       ; Customer:addresses          	                    ; InboundCustomer:Address	                                ; 	                     ;
+                                            ; InboundCustomer:Customer	                                         ; password            	       ; Customer:password           	                    ;                        	                                ; 	                     ;
+
+INSERT_UPDATE InboundChannelConfiguration; integrationObject(code)[unique = true];
+                                         ; InboundCustomer                       ;

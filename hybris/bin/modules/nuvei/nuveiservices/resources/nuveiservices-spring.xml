@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="spring/nuveiservices-converters-spring.xml"/>
+
+    <alias name="defaultNuveiFilteringPaymentMethodsService" alias="nuveiFilteringPaymentMethodsService"/>
+    <bean id="defaultNuveiFilteringPaymentMethodsService"
+          class="com.nuvei.services.payments.impl.DefaultNuveiFilteringPaymentMethodsService">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="nuveiPaymentMethodsConverter" ref="nuveiPaymentMethodsConverter"/>
+    </bean>
+
+    <alias name="defaultNuveiMerchantConfigurationService" alias="nuveiMerchantConfigurationService"/>
+    <bean id="defaultNuveiMerchantConfigurationService"
+          class="com.nuvei.services.merchant.impl.DefaultNuveiMerchantConfigurationService">
+        <constructor-arg name="baseSiteService" ref="baseSiteService"/>
+        <constructor-arg name="nuveiMerchantConfigurationGenericDao" ref="nuveiMerchantConfigurationGenericDao"/>
+    </bean>
+
+    <bean id="nuveiMerchantConfigurationGenericDao"
+          class="de.hybris.platform.servicelayer.internal.dao.DefaultGenericDao">
+        <constructor-arg value="NuveiMerchantConfiguration"/>
+    </bean>
+
+    <bean id="nuveiPaymentMethodGenericDao" class="de.hybris.platform.servicelayer.internal.dao.DefaultGenericDao">
+        <constructor-arg value="nuveiPaymentMethod"/>
+    </bean>
+
+    <alias name="nuveiCartFactory" alias="cartFactory"/>
+    <bean id="nuveiCartFactory" class="com.nuvei.services.order.impl.NuveiCartFactory" parent="commerceCartFactory">
+        <constructor-arg ref="modelService"/>
+    </bean>
+
+    <alias name="defaultNuveiOpenOrderService" alias="nuveiOpenOrderService"/>
+    <bean id="defaultNuveiOpenOrderService"
+          class="com.nuvei.services.openorder.impl.DefaultNuveiOpenOrderService">
+        <constructor-arg name="cartService" ref="cartService"/>
+        <constructor-arg name="nuveiMerchantConfigurationService" ref="nuveiMerchantConfigurationService"/>
+        <constructor-arg name="userAddressConverter" ref="nuveiUseraddressConverter"/>
+    </bean>
+
+    <alias name="defaultNuveiPaymentMethodSyncJob" alias="nuveiPaymentMethodSyncJob"/>
+    <bean id="defaultNuveiPaymentMethodSyncJob"
+          class="com.nuvei.services.jobs.NuveiPaymentMethodSyncJob" parent="abstractJobPerformable">
+        <constructor-arg name="nuveiFilteringPaymentMethodsService" ref="nuveiFilteringPaymentMethodsService"/>
+        <constructor-arg name="nuveiMerchantConfigurationService" ref="nuveiMerchantConfigurationService"/>
+    </bean>
+
+    <alias name="defaultNuveiPaymentInfoService" alias="nuveiPaymentInfoService"/>
+    <bean id="defaultNuveiPaymentInfoService"
+          class="com.nuvei.services.payments.impl.DefaultNuveiPaymentInfoService">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="addressService" ref="addressService"/>
+    </bean>
+
+    <alias name="defaultNuveiPayloadsService" alias="nuveiPayloadsService"/>
+    <bean id="defaultNuveiPayloadsService"
+          class="com.nuvei.services.payloads.impl.DefaultNuveiPayloadsService">
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <bean id="nuveiSetPayloadsPlaceOrderMethodHookMergeDirective"
+          depends-on="commercePlaceOrderMethodHooks" parent="listMergeDirective">
+        <property name="add" ref="nuveiSetPayloadsPlaceOrderMethodHook"/>
+    </bean>
+
+    <alias name="defaultNuveiSetPayloadsPlaceOrderMethodHook" alias="nuveiSetPayloadsPlaceOrderMethodHook"/>
+    <bean id="defaultNuveiSetPayloadsPlaceOrderMethodHook"
+          class="com.nuvei.services.order.hook.impl.NuveiSetPayloadsPlaceOrderMethodHook">
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <alias name="defaultNuveiPaymentMethodService" alias="nuveiPaymentMethodService"/>
+    <bean id="defaultNuveiPaymentMethodService"
+          class="com.nuvei.services.service.impl.DefaultNuveiPaymentMethodService">
+        <constructor-arg name="nuveiPaymentMethodGenericDao" ref="nuveiPaymentMethodGenericDao"/>
+    </bean>
+
+    <alias name="defaultSerializableToJsonAttributeHandler" alias="serializableToJsonAttributeHandler"/>
+    <bean id="defaultSerializableToJsonAttributeHandler"
+          class="com.nuvei.services.handlers.SerializableToJsonAttributeHandler">
+        <constructor-arg name="attributeName" value="rawNotification"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <alias name="defaultAbstractOrderGenericDao" alias="abstractOrderGenericDao"/>
+    <bean id="defaultAbstractOrderGenericDao" class="de.hybris.platform.servicelayer.internal.dao.DefaultGenericDao">
+        <constructor-arg value="abstractOrder"/>
+    </bean>
+
+    <alias name="defaultTransactionEntryModelGenericDao" alias="paymentTransactionEntryModelGenericDao"/>
+    <bean id="defaultTransactionEntryModelGenericDao"
+          class="de.hybris.platform.servicelayer.internal.dao.DefaultGenericDao">
+        <constructor-arg value="paymentTransactionEntry"/>
+    </bean>
+
+    <alias name="defaultNuveiPaymentTransactionService" alias="nuveiPaymentTransactionService"/>
+    <bean id="defaultNuveiPaymentTransactionService"
+          class="com.nuvei.services.service.impl.DefaultNuveiPaymentTransactionService">
+        <constructor-arg ref="modelService" name="modelService"/>
+        <constructor-arg ref="timeService" name="timeService"/>
+        <constructor-arg ref="paymentTransactionEntryModelGenericDao" name="paymentTransactionEntryModelGenericDao"/>
+    </bean>
+
+
+    <alias name="defaultNuveiOrderService" alias="nuveiOrderService"/>
+    <bean id="defaultNuveiOrderService" class="com.nuvei.services.service.impl.DefaultNuveiOrderService">
+        <constructor-arg name="abstractOrderGenericDao" ref="abstractOrderGenericDao"/>
+    </bean>
+
+    <bean id="nuveiAbstractStrategyExecutor" class="com.nuvei.strategy.NuveiAbstractStrategyExecutor" abstract="true"/>
+
+    <bean id="abstractNuveiExchangeService" class="com.nuvei.services.exchange.AbstractNuveiExchangeService"
+          abstract="true">
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <bean id="nuveiSettleService" class="com.nuvei.services.exchange.impl.DefaultNuveiSettleService"
+          parent="abstractNuveiExchangeService">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="nuveiPaymentTransactionService" ref="nuveiPaymentTransactionService"/>
+    </bean>
+
+    <bean id="nuveiVoidService" class="com.nuvei.services.exchange.impl.DefaultNuveiVoidService"
+          parent="abstractNuveiExchangeService">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="nuveiPaymentTransactionService" ref="nuveiPaymentTransactionService"/>
+    </bean>
+
+    <bean id="nuveiRefundService" class="com.nuvei.services.exchange.impl.DefaultNuveiRefundService"
+          parent="abstractNuveiExchangeService">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="nuveiPaymentTransactionService" ref="nuveiPaymentTransactionService"/>
+    </bean>
+
+    <bean id="paymentTransactionEntryGenericDao"
+          class="de.hybris.platform.servicelayer.internal.dao.DefaultGenericDao">
+        <constructor-arg value="PaymentTransactionEntry"/>
+    </bean>
+
+    <alias name="defaultNuveiPaymentTransactionEntryService" alias="nuveiPaymentTransactionEntryService"/>
+    <bean id="defaultNuveiPaymentTransactionEntryService"
+          class="com.nuvei.services.service.impl.DefaultNuveiPaymentTransactionEntryService">
+        <constructor-arg ref="paymentTransactionEntryGenericDao" name="paymentTransactionEntryGenericDao"/>
+    </bean>
+
+    <alias name="defaultNuveiPartialOrderCancelDenialStrategy"
+           alias="nuveiPartialOrderCancelDenialStrategy"/>
+    <bean id="defaultNuveiPartialOrderCancelDenialStrategy"
+          class="com.nuvei.ordercancel.denialstrategies.impl.NuveiPartialOrderCancelDenialStrategy">
+        <property name="reason">
+            <bean class="de.hybris.platform.ordercancel.DefaultOrderCancelDenialReason">
+                <property name="code" value="5"/>
+                <property name="description"
+                          value="Partial Order or order entry refund is not supported."/>
+            </bean>
+        </property>
+    </bean>
+
+    <alias name="defaultNuveiPaymentStatusOrderCancelDenialStrategy"
+           alias="nuveiPaymentStatusOrderCancelDenialStrategy"/>
+    <bean id="defaultNuveiPaymentStatusOrderCancelDenialStrategy"
+          class="com.nuvei.ordercancel.denialstrategies.impl.NuveiPaymentStatusOrderCancelDenialStrategy">
+        <property name="reason">
+            <bean class="de.hybris.platform.ordercancel.DefaultOrderCancelDenialReason">
+                <property name="code" value="6"/>
+                <property name="description"
+                          value="Order Cancel for not authorized order or captured order not allowed."/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="nuveiPartialOrderCancelServiceListMergeDirective" depends-on="orderCancelService"
+          parent="listMergeDirective">
+        <property name="add" ref="nuveiPartialOrderCancelDenialStrategy"/>
+        <property name="listPropertyDescriptor" value="cancelDenialStrategies"/>
+    </bean>
+
+    <bean id="nuveiPaymentStatusOrderCancelServiceListMergeDirective" depends-on="orderCancelService"
+          parent="listMergeDirective">
+        <property name="add" ref="nuveiPaymentStatusOrderCancelDenialStrategy"/>
+        <property name="listPropertyDescriptor" value="cancelDenialStrategies"/>
+    </bean>
+
+</beans>

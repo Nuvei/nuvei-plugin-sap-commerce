@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:annotation-config/>
+
+	<!-- Expose /acceleratoraddon/web/webroot/WEB-INF/messages/base.js.properties  resource bundle as javascript variables -->
+	<bean id="defaultNuveiaddonJavaScriptMessageResourceAccessor" parent="abstractJavaScriptMessageResourceAccessor">
+		<property name="addOnName" value="nuveiaddon"/>
+	</bean>
+
+	<bean id="defaultNuveiaddonBeforeViewJsPropsHandlerAdaptee" parent="abstractBeforeViewJsPropsHandlerAdaptee" class="de.hybris.platform.addonsupport.interceptors.ExportJsPropertiesBeforeViewHandler">
+		<property name="messageSource" ref="defaultNuveiaddonJavaScriptMessageResourceAccessor"/>
+	</bean>
+
+	<bean id="getNuveiaddonBeforeViewHandler" parent="beforeViewHandlerAdapter">
+		<property name="adaptee">
+			<ref bean="defaultNuveiaddonBeforeViewJsPropsHandlerAdaptee"/>
+		</property>
+	</bean>
+	<bean id="NuveiaddonBeforeViewHandlerListMergeDirective" depends-on="beforeViewHandlersList"
+		  parent="listMergeDirective">
+		<property name="add" ref="getNuveiaddonBeforeViewHandler"/>
+	</bean>
+
+	<bean id="REDIRECT_TO_BILLING_ADDRESS" class="java.lang.String">
+		<constructor-arg value="redirect:/checkout/multi/nuvei/billing-address/add"/>
+	</bean>
+
+	<bean id="REDIRECT_TO_PAYMENT_METHOD" class="java.lang.String">
+		<constructor-arg value="redirect:/checkout/multi/nuvei/payment/payment-method"/>
+	</bean>
+
+	<alias name="defaultNuveiCheckoutStepsValidator" alias="nuveiCheckoutStepsValidator"/>
+	<bean id="defaultNuveiCheckoutStepsValidator"
+		  class="com.nuvei.addon.validators.impl.DefaultNuveiCheckoutStepsValidator"/>
+
+</beans>

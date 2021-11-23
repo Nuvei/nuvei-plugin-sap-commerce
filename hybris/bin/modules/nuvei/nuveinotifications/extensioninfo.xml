@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<extensioninfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="extensioninfo.xsd">
+        
+    <extension abstractclassprefix="Generated" classprefix="Nuveinotifications" jaloLogicFree="true" managername="NuveinotificationsManager" managersuperclass="de.hybris.platform.jalo.extension.Extension" name="nuveinotifications" usemaven="false">
+                
+        <requires-extension name="nuveiservices"/>
+                
+        <coremodule generated="true" manager="com.nuvei.notifications.jalo.NuveinotificationsManager" packageroot="com.nuvei.notifications"/>
+                
+        <webmodule jspcompile="false" webroot="/nuveinotifications"/>
+            
+    </extension>
+    
+</extensioninfo>

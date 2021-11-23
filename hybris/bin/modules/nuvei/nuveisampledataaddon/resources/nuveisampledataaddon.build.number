@@ -1,0 +1,11 @@
+#Ant properties
+#Tue Nov 23 08:34:41 UTC 2021
+version.api=2011
+vendor=hybris
+group.id=de.hybris.platform
+name=nuveisampledataaddon
+description=nuveisampledataaddon
+builddate=20211123 0834
+releasedate=20210507 1245
+version=2011.7
+module.name=platform-module

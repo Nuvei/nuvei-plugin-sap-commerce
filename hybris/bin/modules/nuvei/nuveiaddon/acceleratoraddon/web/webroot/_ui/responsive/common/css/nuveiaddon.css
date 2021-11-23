@@ -1,0 +1,30 @@
+.container_for_checkout .sfc-main-container .SfcField {
+    box-sizing: content-box;
+}
+.container_for_checkout .sfc-main-container .sfc-cfa-button {
+    color: #fff;
+    background-color: #ec7205;
+    border-color: #ec7205;
+    border-radius: 0;
+}
+.container_for_checkout .sfc-main-container .validation.visible {
+    font-size: 14px;
+    margin-top: 5px;
+}
+.container_for_checkout .sfc-main-container .form-radio-style label {
+    display: block;
+}
+.container_for_checkout .sfc-main-container input[type="checkbox"] ~ label {
+    display: inline-block;
+}
+.container_for_checkout .sfc-main-container .line-container .checkmark:after {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.container_for_checkout .sfc-main-container .form-radio-style.item-selected {
+    border-color: #ccc;
+}
+.cardWidget .inputField {
+    font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}

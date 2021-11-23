@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <alias name="defaultNuveiPaymentMethodsPopulator" alias="nuveiPaymentMethodsPopulator"/>
+    <bean name="defaultNuveiPaymentMethodsPopulator" class="com.nuvei.services.converter.NuveiPaymentMethodsPopulator">
+        <constructor-arg ref="commerceCommonI18NService" name="commerceCommonI18NService"/>
+    </bean>
+
+    <alias name="defaultNuveiPaymentMethodsConverter" alias="nuveiPaymentMethodsConverter"/>
+    <bean id="defaultNuveiPaymentMethodsConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="com.nuvei.services.model.NuveiPaymentMethodModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="nuveiPaymentMethodsPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultNuveiUserAddressConverter" alias="nuveiUseraddressConverter"/>
+    <bean id="defaultNuveiUserAddressConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="com.safecharge.model.UserAddress"/>
+        <property name="populators">
+            <list>
+                <ref bean="nuveiUserAddressPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultNuveiUserAddressPopulator" alias="nuveiUserAddressPopulator"/>
+    <bean id="defaultNuveiUserAddressPopulator"
+          class="com.nuvei.services.converter.NuveiUserAddressPopulator">
+        <constructor-arg name="nuveiMerchantConfigurationService" ref="nuveiMerchantConfigurationService"/>
+    </bean>
+</beans>

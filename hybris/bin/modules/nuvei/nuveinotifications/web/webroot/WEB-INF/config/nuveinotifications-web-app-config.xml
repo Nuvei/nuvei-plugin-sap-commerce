@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <import resource="nuveinotifications-spring-security-config.xml"/>
+
+    <context:annotation-config/>
+
+    <!-- Spring managed FilterChain for hybris Filter stack -->
+    <bean id="nuveinotificationsPlatformFilterChain" class="de.hybris.platform.servicelayer.web.PlatformFilterChain">
+        <constructor-arg>
+            <list>
+                <ref bean="log4jFilter"/>
+                <ref bean="sessionFilter"/>
+                <ref bean="nuveinotificationsMediaFilter"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!-- This filter is responsible for all media and secure-media handling -->
+    <bean id="nuveinotificationsMediaFilter" class="de.hybris.platform.servicelayer.web.WebAppMediaFilter">
+        <property name="mediaPermissionService" ref="mediaPermissionService"/>
+        <property name="modelService" ref="modelService"/>
+        <property name="userService" ref="userService"/>
+        <property name="mediaService" ref="mediaService"/>
+        <!-- Change this it to 'true' if you want webApp contextPath to be added automatically to the URLs by the filter -->
+        <property name="addContextPath" value="false"/>
+        <!--  secure media resource path prefix - __secure__ is default, but you may overwrite it -->
+    </bean>
+
+</beans>

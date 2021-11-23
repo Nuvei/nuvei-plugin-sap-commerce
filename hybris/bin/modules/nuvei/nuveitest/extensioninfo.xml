@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<extensioninfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="extensioninfo.xsd">
+        
+    <extension abstractclassprefix="Generated" classprefix="Nuveitest" jaloLogicFree="true" managername="NuveitestManager" managersuperclass="de.hybris.platform.jalo.extension.Extension" name="nuveitest" usemaven="false">
+                
+        <requires-extension name="odata2services"/>
+                
+        <coremodule generated="true" manager="com.nuvei.test.jalo.NuveitestManager" packageroot="com.nuvei.test"/>
+            
+    </extension>
+    
+</extensioninfo>

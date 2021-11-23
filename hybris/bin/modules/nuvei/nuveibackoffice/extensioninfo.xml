@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<extensioninfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="extensioninfo.xsd">
+        
+    <extension abstractclassprefix="Generated" classprefix="Nuveibackoffice" name="nuveibackoffice" usemaven="false">
+                
+        <requires-extension name="backoffice"/>
+                
+        <requires-extension name="customersupportbackoffice"/>
+                
+        <requires-extension name="nuveiservices"/>
+                
+        <requires-extension name="nuveinotifications"/>
+                
+        <coremodule generated="true" manager="com.nuvei.backoffice.jalo.NuveibackofficeManager" packageroot="com.nuvei.backoffice"/>
+                
+        <meta key="backoffice-module" value="true"/>
+            
+    </extension>
+    
+</extensioninfo>

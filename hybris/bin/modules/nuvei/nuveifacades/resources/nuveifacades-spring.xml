@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="spring/nuveifacades-converters-spring.xml"/>
+
+    <alias name="defaultNuveiAddressFacade" alias="nuveiAddressFacade"/>
+	<bean name="defaultNuveiAddressFacade" class="com.nuvei.facades.address.impl.DefaultNuveiAddressFacade">
+		<constructor-arg name="cartService" ref="cartService"/>
+		<constructor-arg name="deliveryService" ref="deliveryService"/>
+		<constructor-arg name="modelService" ref="modelService"/>
+		<constructor-arg name="addressReverseConverter" ref="addressReverseConverter"/>
+	</bean>
+
+    <alias name="defaultNuveiOpenOrderFacade" alias="nuveiOpenOrderFacade"/>
+    <bean id="defaultNuveiOpenOrderFacade"
+          class="com.nuvei.facades.openorder.impl.DefaultNuveiOpenOrderFacade">
+        <constructor-arg name="nuveiOpenOrderService" ref="nuveiOpenOrderService"/>
+    </bean>
+
+    <alias name="defaultNuveiPaymentInfoFacade" alias="nuveiPaymentInfoFacade"/>
+    <bean id="defaultNuveiPaymentInfoFacade"
+          class="com.nuvei.facades.payment.impl.DefaultNuveiPaymentInfoFacade">
+        <constructor-arg name="cartService" ref="cartService"/>
+        <constructor-arg name="nuveiPaymentInfoModelConverter" ref="nuveiPaymentInfoReverseConverter"/>
+        <constructor-arg name="nuveiPaymentInfoService" ref="nuveiPaymentInfoService"/>
+    </bean>
+
+    <alias name="defaultNuveiPayloadsFacade" alias="nuveiPayloadsFacade"/>
+    <bean id="defaultNuveiPayloadsFacade"
+          class="com.nuvei.facades.payloads.impl.DefaultNuveiPayloadsFacade">
+        <constructor-arg name="cartService" ref="cartService"/>
+        <constructor-arg name="nuveiPayloadsService" ref="nuveiPayloadsService"/>
+    </bean>
+
+    <alias name="defaultNuveiCheckoutSDKRequestBuilder" alias="nuveiCheckoutSDKRequestBuilder"/>
+    <bean id="defaultNuveiCheckoutSDKRequestBuilder"
+          class="com.nuvei.facades.checkoutsdk.impl.DefaultNuveiCheckoutSDKRequestBuilder">
+        <constructor-arg name="cartService" ref="cartService"/>
+        <constructor-arg name="nuveiBlockedCardsConverter" ref="nuveiBlockedCardsConverter"/>
+        <constructor-arg name="nuveiMerchantConfigurationService" ref="nuveiMerchantConfigurationService"/>
+        <constructor-arg name="commerceCommonI18NService" ref="commerceCommonI18NService"/>
+    </bean>
+
+    <alias name="nuveiOrderCancelPopulator" alias="orderCancelPopulator"/>
+    <bean id="nuveiOrderCancelPopulator" parent="defaultOrderCancelPopulator"
+          class="com.nuvei.facades.converters.populators.NuveiOrderCancelPopulator"/>
+
+    <alias name="nuveiDefaultOmsOrderFacade" alias="omsOrderFacade"/>
+    <bean id="nuveiDefaultOmsOrderFacade" parent="defaultOmsOrderFacade"
+          class="com.nuvei.facades.ordermanagement.impl.NuveiDefaultOmsOrderFacade"/>
+</beans>

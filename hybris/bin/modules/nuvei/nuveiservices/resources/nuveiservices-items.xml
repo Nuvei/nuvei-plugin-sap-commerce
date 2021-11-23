@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:noNamespaceSchemaLocation="items.xsd">
+
+	<collectiontypes>
+		<collectiontype code="NuveiMerchantConfigurationList" elementtype="NuveiMerchantConfiguration" autocreate="true"
+						generate="true" type="list"/>
+		<collectiontype elementtype="NuveiBrand" code="NuveiBrandList" autocreate="true" type="list"/>
+		<collectiontype elementtype="Country" code="CountryList" autocreate="true" type="list"/>
+		<collectiontype elementtype="NuveiCardType" code="NuveiCardTypeList" autocreate="true" type="list"/>
+		<collectiontype elementtype="NuveiCardProduct" code="NuveiCardProductList" autocreate="true" type="list"/>
+	</collectiontypes>
+
+	<enumtypes>
+		<enumtype code="NuveiHashAlgorithm" dynamic="true">
+			<value code="MD5"/>
+			<value code="SHA256"/>
+		</enumtype>
+
+		<enumtype code="NuveiPayButton" dynamic="true">
+			<value code="amountButton"/>
+			<value code="textButton"/>
+		</enumtype>
+
+		<enumtype code="NuveiLogLevel" dynamic="true">
+			<value code="VALUE_0"/>
+			<value code="VALUE_1"/>
+			<value code="VALUE_2"/>
+			<value code="VALUE_3"/>
+			<value code="VALUE_4"/>
+			<value code="VALUE_5"/>
+			<value code="VALUE_6"/>
+			<value code="VALUE_7"/>
+		</enumtype>
+
+		<enumtype code="NuveiEnv" dynamic="true">
+			<value code="prod"/>
+			<value code="int"/>
+		</enumtype>
+
+		<enumtype code="NuveiBrand" dynamic="true">
+			<value code="visa"/>
+			<value code="mastercard"/>
+			<value code="amex"/>
+			<value code="diners"/>
+			<value code="discover"/>
+			<value code="jcb"/>
+			<value code="dankort"/>
+			<value code="unionpay"/>
+		</enumtype>
+
+		<enumtype code="NuveiCardProduct" dynamic="true">
+			<value code="credit"/>
+			<value code="debit"/>
+		</enumtype>
+
+		<enumtype code="NuveiCardType" dynamic="true">
+			<value code="consumer"/>
+			<value code="corporate"/>
+		</enumtype>
+
+		<enumtype code="NuveiFilterType" dynamic="true">
+			<value code="noFilter"/>
+			<value code="denylist"/>
+			<value code="allowlist"/>
+		</enumtype>
+
+		<enumtype code="NuveiTransactionType">
+			<value code="Sale"/>
+			<value code="Auth"/>
+			<value code="Settle"/>
+			<value code="Credit"/>
+			<value code="Void"/>
+			<value code="Chargeback"/>
+			<value code="Modification"/>
+		</enumtype>
+
+		<enumtype code="PaymentTransactionType" autocreate="false" generate="false">
+			<value code="SALE"/>
+			<value code="VOID"/>
+		</enumtype>
+
+		<enumtype code="FinalFraudDecisionEnum" dynamic="true">
+			<value code="Accept"/>
+			<value code="Reject"/>
+		</enumtype>
+
+		<enumtype code="SystemDecisionEnum" dynamic="true">
+			<value code="None"/>
+			<value code="Accept"/>
+			<value code="Reject"/>
+			<value code="Review"/>
+			<value code="Error"/>
+		</enumtype>
+	</enumtypes>
+
+	<relations>
+		<relation code="NuveiMerchantConfiguration2NuveiI18nLabel" autocreate="true" generate="true" localized="false">
+			<sourceElement qualifier="labels" type="NuveiI18nLabel" cardinality="many"/>
+			<targetElement qualifier="nuveiMerchantConfiguration" type="NuveiMerchantConfiguration" cardinality="one"/>
+		</relation>
+		<relation code="NuveiMerchantConfiguration2BlockedCards" autocreate="true" generate="true" localized="false">
+			<sourceElement qualifier="blockedCards" type="NuveiBlockedCards" cardinality="many"/>
+			<targetElement qualifier="nuveiMerchantConfiguration" type="NuveiMerchantConfiguration" cardinality="one"/>
+		</relation>
+
+        <relation code="MerchantConfig2PaymentMethod" localized="false">
+            <sourceElement type="nuveiMerchantConfiguration" cardinality="one" qualifier="merchantConfiguration"/>
+			<targetElement type="NuveiPaymentMethod" cardinality="many" collectiontype="set"
+						   qualifier="paymentMethods"/>
+        </relation>
+
+        <relation code="MerchantConfig2AllowListed" localized="false">
+			<sourceElement type="nuveiMerchantConfiguration" cardinality="one"
+						   qualifier="merchantConfigurationAllowListed"/>
+			<targetElement type="NuveiPaymentMethod" cardinality="many" collectiontype="set"
+						   qualifier="allowListPaymentMethods"/>
+        </relation>
+
+        <relation code="MerchantConfig2DenyListed" localized="false">
+			<sourceElement type="nuveiMerchantConfiguration" cardinality="one"
+						   qualifier="merchantConfigurationDenyListed"/>
+			<targetElement type="NuveiPaymentMethod" cardinality="many" collectiontype="set"
+						   qualifier="denyListPaymentMethods"/>
+        </relation>
+		<relation code="AbstractOrder2RequestPayload" localized="false">
+			<sourceElement type="abstractOrder" cardinality="one" qualifier="requestOrder"/>
+			<targetElement type="nuveiPayload" cardinality="many" qualifier="requestsPayload"/>
+		</relation>
+		<relation code="AbstractOrder2ResponsePayload" localized="false">
+			<sourceElement type="abstractOrder" cardinality="one" qualifier="responseOrder"/>
+			<targetElement type="nuveiPayload" cardinality="many" qualifier="responsesPayload"/>
+		</relation>
+	</relations>
+
+	<itemtypes>
+		<typegroup name="NuveiItems">
+			<itemtype code="NuveiMerchantConfiguration">
+				<deployment table="NuveiMerchantConfig" typecode="25001"/>
+				<attributes>
+					<attribute qualifier="code" type="java.lang.String">
+						<persistence type="property"/>
+						<modifiers initial="true" optional="false"/>
+						<description>Nuvei Merchant Configuration id.</description>
+					</attribute>
+					<attribute qualifier="merchantId" type="java.lang.String">
+						<persistence type="property"/>
+						<description>Merchant ID provided by Nuvei.</description>
+						<modifiers unique="true" optional="false" initial="true"/>
+					</attribute>
+					<attribute qualifier="merchantSiteId" type="java.lang.String">
+						<persistence type="property"/>
+						<description>Merchant site ID provided by Nuvei.</description>
+						<modifiers unique="true" optional="false" initial="true"/>
+					</attribute>
+					<attribute qualifier="merchantSecretKey" type="java.lang.String">
+						<persistence type="property"/>
+						<description>Merchant secret key provided by Nuvei.</description>
+					</attribute>
+					<attribute qualifier="payButton" type="NuveiPayButton">
+						<persistence type="property"/>
+						<modifiers optional="false" initial="true"/>
+						<description>Pay button style.</description>
+					</attribute>
+					<attribute qualifier="logLevel" type="NuveiLogLevel">
+						<persistence type="property"/>
+						<modifiers optional="false" initial="true"/>
+						<description>Desired log level.</description>
+					</attribute>
+					<attribute qualifier="env" type="NuveiEnv">
+						<persistence type="property"/>
+						<modifiers optional="false" initial="true"/>
+						<description>Environment to use.</description>
+					</attribute>
+					<attribute qualifier="savePM" type="java.lang.Boolean">
+						<persistence type="property"/>
+						<defaultvalue>Boolean.FALSE</defaultvalue>
+						<description>Save my details for future use availability.</description>
+					</attribute>
+					<attribute qualifier="hashAlgorithm" type="NuveiHashAlgorithm">
+						<persistence type="property"/>
+						<description>The Hash Algorithm to use.</description>
+						<modifiers read="true" write="true" search="true" optional="false" initial="true"/>
+					</attribute>
+					<attribute qualifier="serverHost" type="java.lang.String">
+						<persistence type="property"/>
+						<description>The current server address.</description>
+						<modifiers read="true" write="true" search="true" optional="false" initial="true"/>
+					</attribute>
+					<attribute qualifier="filterType" type="NuveiFilterType">
+						<persistence type="property"/>
+						<description>The filter type.</description>
+						<modifiers read="true" write="true" search="true" optional="true" initial="true"/>
+						<defaultvalue>em().getEnumerationValue("NuveiFilterType", "noFilter")</defaultvalue>
+					</attribute>
+					<attribute qualifier="alwaysCollectCvv" type="java.lang.Boolean">
+						<persistence type="property"/>
+						<defaultvalue>Boolean.TRUE</defaultvalue>
+						<description>Collects the CVV for a stored card.</description>
+					</attribute>
+					<attribute qualifier="prePopulateFullName" type="java.lang.Boolean">
+						<persistence type="property"/>
+						<description>Pre-populates the cardholder name on nuvei checkout with the billing address name</description>
+						<modifiers read="true" write="true" search="true" optional="true" initial="true"/>
+						<defaultvalue>Boolean.FALSE</defaultvalue>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="NuveiI18nLabel">
+				<deployment table="NuveiI18nLabel" typecode="25002"/>
+				<attributes>
+					<attribute qualifier="key" type="java.lang.String">
+						<persistence type="property"/>
+						<modifiers unique="true" optional="false" initial="true"/>
+						<description>Label key.</description>
+					</attribute>
+					<attribute qualifier="value" type="localized:java.lang.String">
+						<persistence type="property"/>
+						<description>Label texts.</description>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="NuveiBlockedCards">
+				<deployment table="NuveiBlockedCards" typecode="25003"/>
+				<attributes>
+					<attribute qualifier="code" type="java.lang.String">
+						<persistence type="property"/>
+						<modifiers unique="true" initial="true" optional="false"/>
+					</attribute>
+					<attribute qualifier="brand" type="NuveiBrandList">
+						<modifiers optional="true"/>
+						<persistence type="property"/>
+					</attribute>
+					<attribute qualifier="cardProduct" type="NuveiCardProductList">
+						<modifiers optional="true"/>
+						<persistence type="property"/>
+					</attribute>
+					<attribute qualifier="cardType" type="NuveiCardTypeList">
+						<modifiers optional="true"/>
+						<persistence type="property"/>
+					</attribute>
+					<attribute qualifier="country" type="CountryList">
+						<modifiers optional="true"/>
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="NuveiPaymentMethod">
+                <deployment table="NuveiPaymentMethod" typecode="25011"/>
+                <attributes>
+                    <attribute qualifier="id" type="java.lang.String">
+                        <persistence type="property"/>
+                        <description>The payment method id.</description>
+                        <modifiers read="true" write="true" search="true" optional="false" initial="true"/>
+                    </attribute>
+                    <attribute qualifier="displayName" type="localized:java.lang.String">
+                        <persistence type="property"/>
+                        <description>The payment method display name.</description>
+                        <modifiers read="true" write="true" search="true" optional="true"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+		</typegroup>
+
+		<typegroup name="Site">
+			<itemtype code="BaseSite" autocreate="false" generate="false">
+				<description>Extending BaseSite type with additional attributes.</description>
+				<attributes>
+					<attribute qualifier="nuveiMerchantConfiguration" type="NuveiMerchantConfiguration">
+						<description>The Merchant Configuration</description>
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+			</itemtype>
+		</typegroup>
+
+		<typegroup name="Order">
+			<itemtype code="AbstractOrder" autocreate="false" generate="false">
+				<description>Extending AbstractOrder type with additional Nuvei attributes.</description>
+				<attributes>
+					<attribute qualifier="clientUniqueId" type="java.lang.String">
+						<description>The unique ID for register the order</description>
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="NuveiPayload">
+				<deployment table="NuveiPayload" typecode="25005"/>
+				<attributes>
+					<attribute qualifier="payload" type="java.lang.String">
+						<persistence type="property">
+							<columntype>
+								<value>HYBRIS.LONG_STRING</value>
+							</columntype>
+							<columntype database="mysql">
+								<value>MEDIUMTEXT</value>
+							</columntype>
+							<columntype database="oracle">
+								<value>CLOB</value>
+							</columntype>
+							<columntype database="sqlserver">
+								<value>TEXT</value>
+							</columntype>
+							<columntype database="sap">
+								<value>NCLOB</value>
+							</columntype>
+						</persistence>
+					</attribute>
+				</attributes>
+			</itemtype>
+		</typegroup>
+
+		<typegroup name="Payments">
+			<itemtype code="NuveiPaymentInfo" autocreate="true" generate="true" extends="PaymentInfo">
+				<description>Extending PaymentInfo type with additional Nuvei attributes.</description>
+				<attributes>
+					<attribute qualifier="merchantId" type="java.lang.String">
+						<persistence type="property"/>
+					</attribute>
+					<attribute qualifier="transactionId" type="java.lang.String">
+						<persistence type="property"/>
+					</attribute>
+					<attribute qualifier="paymentMethod" type="NuveiPaymentMethod">
+						<persistence type="property"/>
+					</attribute>
+					<attribute qualifier="transactionType" type="NuveiTransactionType">
+						<persistence type="property"/>
+					</attribute>
+					<attribute qualifier="maskedCardNumber" type="java.lang.String">
+						<description>The credit card number in a mask, for example: 4****1111.</description>
+						<persistence type="property"/>
+					</attribute>
+					<attribute qualifier="expMonth" type="java.lang.String">
+						<description>The expiration month</description>
+						<persistence type="property"/>
+					</attribute>
+					<attribute qualifier="expYear" type="java.lang.String">
+						<description>The expiration year</description>
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+			</itemtype>
+			<itemtype code="PaymentTransactionEntry" generate="false" autocreate="false">
+				<attributes>
+					<attribute qualifier="nuveiNotificationId" type="java.lang.String">
+						<description>The DMN associated Id</description>
+						<persistence type="property"/>
+					</attribute>
+					<attribute qualifier="clientRequestId" type="java.lang.String">
+						<description>The client request id associated whit DMN</description>
+						<persistence type="property"/>
+					</attribute>
+					<attribute qualifier="systemDecision" type="SystemDecisionEnum">
+						<description>The fraud system decision</description>
+						<persistence type="property"/>
+					</attribute>
+					<attribute qualifier="finalFraudDecision" type="FinalFraudDecisionEnum">
+						<description>The final fraud decision</description>
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+				<indexes>
+					<index name="nuveiNotificationIdIdx">
+						<key attribute="nuveiNotificationId"/>
+					</index>
+				</indexes>
+			</itemtype>
+		</typegroup>
+
+		<typegroup name="Cronjob">
+			<itemtype code="NuveiMerchantSyncCronjob"
+					  extends="Cronjob"
+					  autocreate="true"
+					  generate="true">
+				<attributes>
+					<attribute qualifier="nuveiMerchantConfigurations" type="NuveiMerchantConfigurationList">
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+		</typegroup>
+	</itemtypes>
+</items>

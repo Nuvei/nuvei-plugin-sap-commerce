@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="beans.xsd">
+
+	<bean class="com.nuvei.facades.beans.NuveiCheckoutSDKRequestData">
+		<property name="env" type="java.lang.String"/>
+		<property name="merchantId" type="java.lang.String"/>
+		<property name="merchantSiteId" type="java.lang.String"/>
+		<property name="savePM" type="java.lang.Boolean"/>
+		<property name="pmWhitelist" type="java.util.List&lt;java.lang.String>"/>
+		<property name="pmBlacklist" type="java.util.List&lt;java.lang.String>"/>
+		<property name="i18n" type="java.util.Map&lt;java.lang.String, java.lang.String>"/>
+		<property name="blockCards" type="java.util.List&lt;java.util.List&lt;java.lang.String>>"/>
+		<property name="payButton" type="java.lang.String"/>
+		<property name="logLevel" type="java.lang.String"/>
+		<property name="country" type="java.lang.String"/>
+		<property name="currency" type="java.lang.String"/>
+		<property name="amount" type="java.lang.String"/>
+		<property name="userTokenId" type="java.lang.String"/>
+		<property name="fullName" type="java.lang.String"/>
+		<property name="email" type="java.lang.String"/>
+		<property name="locale" type="java.lang.String"/>
+		<property name="sessionToken" type="java.lang.String"/>
+		<property name="alwaysCollectCvv" type="java.lang.Boolean"/>
+	</bean>
+
+	<bean class="com.nuvei.facades.beans.NuveiBlockedCardsData">
+		<property name="brands" type="java.util.List&lt;java.lang.String>"/>
+		<property name="cardProducts" type="java.util.List&lt;java.lang.String>"/>
+		<property name="cardTypes" type="java.util.List&lt;java.lang.String>"/>
+		<property name="countries" type="java.util.List&lt;java.lang.String>"/>
+	</bean>
+
+	<bean class="com.nuvei.facades.beans.NuveiSDKResponseData">
+		<import type="com.fasterxml.jackson.annotation.JsonIgnoreProperties"/>
+		<annotations>@JsonIgnoreProperties(ignoreUnknown = true)</annotations>
+		<property name="result" type="java.lang.String"/>
+		<property name="errCode" type="java.lang.String"/>
+		<property name="errorDescription" type="java.lang.String"/>
+		<property name="userPaymentOptionId" type="java.lang.String"/>
+		<property name="cavv" type="java.lang.String"/>
+		<property name="eci" type="java.lang.String"/>
+		<property name="xid" type="java.lang.String"/>
+		<property name="dsTransID" type="java.lang.String"/>
+		<property name="ccCardNumber" type="java.lang.String"/>
+		<property name="bin" type="java.lang.String"/>
+		<property name="last4Digits" type="java.lang.String"/>
+		<property name="ccExpMonth" type="java.lang.String"/>
+		<property name="ccExpYear" type="java.lang.String"/>
+		<property name="transactionId" type="java.lang.String"/>
+		<property name="cancelled" type="java.lang.Boolean"/>
+		<property name="transactionStatus" type="java.lang.String"/>
+		<property name="transactionType" type="java.lang.String"/>
+		<property name="brand" type="java.lang.String"/>
+		<property name="cardType" type="java.lang.String"/>
+	</bean>
+
+</beans>

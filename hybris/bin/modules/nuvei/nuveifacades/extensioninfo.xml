@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<extensioninfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="extensioninfo.xsd">
+        
+    <extension abstractclassprefix="Generated" classprefix="Nuveifacades" jaloLogicFree="true" managername="NuveifacadesManager" managersuperclass="de.hybris.platform.jalo.extension.Extension" name="nuveifacades" usemaven="false">
+                
+        <requires-extension name="acceleratorfacades"/>
+                
+        <requires-extension name="commercefacades"/>
+                
+        <requires-extension name="nuveiservices"/>
+                
+        <requires-extension name="ordermanagementfacades"/>
+                
+        <coremodule generated="true" manager="com.nuvei.facades.jalo.NuveifacadesManager" packageroot="com.nuvei.facades"/>
+            
+    </extension>
+    
+</extensioninfo>

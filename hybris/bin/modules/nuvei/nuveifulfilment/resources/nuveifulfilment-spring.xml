@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+    <!-- Process definition -->
+
+    <alias name="nuveiOrderProcessDefinitionResource" alias="orderProcessDefinitionResource"/>
+    <bean id="nuveiOrderProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+        <property name="resource" value="classpath:/nuveifulfilment/process/order-process.xml"/>
+    </bean>
+
+    <alias name="nuveiReturnProcessDefinitionResource" alias="returnProcessDefinitionResource"/>
+    <bean id="nuveiReturnProcessDefinitionResource"
+          class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+        <property name="resource" value="classpath:/nuveifulfilment/process/return-process.xml"/>
+    </bean>
+
+    <alias name="nuveiVoidProcessDefinitionResource" alias="voidProcessDefinitionResource"/>
+    <bean id="nuveiVoidProcessDefinitionResource" class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+        <property name="resource" value="classpath:/nuveifulfilment/process/void-process.xml"/>
+    </bean>
+
+    <bean id="checkAuthorizeOrderPaymentAction" class="com.nuvei.order.actions.NuveiCheckAuthorizeOrderPaymentAction" parent="abstractAction">
+        <constructor-arg name="strategyExecutor" ref="checkAuthorizeOrderPaymentStrategyExecutor"/>
+    </bean>
+
+    <bean id="checkPaymentStatusAction" class="com.nuvei.order.actions.NuveiCheckPaymentStatusAction"
+          parent="abstractAction">
+        <constructor-arg name="strategyExecutor" ref="checkPaymentStatusStrategyExecutor"/>
+    </bean>
+
+    <bean id="captureNotificationAction" class="com.nuvei.order.actions.NuveiCapturePaymentAction"
+          parent="abstractAction">
+        <constructor-arg name="nuveiSettleService" ref="nuveiSettleService"/>
+    </bean>
+
+    <bean id="abstractActionTransitionStrategy"
+          class="com.nuvei.order.strategies.NuveiAbstractActionTransitionStrategy" abstract="true">
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <!-- checkAuthorizeOrderPaymentAction Strategy -->
+    <bean id="checkAuthorizeOrderPaymentForSaleOrAuthOK"
+          class="com.nuvei.order.strategies.checkorderpayment.NuveiCheckAuthorizeOrderPaymentForSaleOrAuthOKStrategy"
+          parent="abstractActionTransitionStrategy"/>
+
+    <bean id="checkAuthorizeOrderPaymentForSaleOrAuthWait"
+          class="com.nuvei.order.strategies.checkorderpayment.NuveiCheckAuthorizeOrderPaymentForSaleOrAuthWaitStrategy"
+          parent="abstractActionTransitionStrategy"/>
+
+    <bean id="checkAuthorizeOrderPaymentForSaleOrAuthNOKAmount"
+          class="com.nuvei.order.strategies.checkorderpayment.NuveiCheckAuthorizeOrderPaymentForSaleOrAuthNOKAmountStrategy"
+          parent="abstractActionTransitionStrategy"/>
+
+    <bean id="checkAuthorizeOrderPaymentForSaleOrAuthNOKStatus"
+          class="com.nuvei.order.strategies.checkorderpayment.NuveiCheckAuthorizeOrderPaymentForSaleOrAuthNOKStatusStrategy"
+          parent="abstractActionTransitionStrategy"/>
+
+    <bean id="checkAuthorizeOrderPaymentStrategyExecutor"
+          parent="nuveiAbstractStrategyExecutor" >
+        <property name="strategies" ref="checkAuthorizeOrderPaymentStrategies"/>
+    </bean>
+
+    <util:list id="checkAuthorizeOrderPaymentStrategies">
+        <ref bean="checkAuthorizeOrderPaymentForSaleOrAuthOK"/>
+        <ref bean="checkAuthorizeOrderPaymentForSaleOrAuthWait"/>
+        <ref bean="checkAuthorizeOrderPaymentForSaleOrAuthNOKStatus"/>
+        <ref bean="checkAuthorizeOrderPaymentForSaleOrAuthNOKAmount"/>
+    </util:list>
+
+    <!-- checkPaymentStatusAction Strategy -->
+    <bean id="checkPaymentStatusForSaleOrCaptureOK"
+          class="com.nuvei.order.strategies.checkorderpaymentstatus.NuveiCheckPaymentStatusForSaleOrCaptureOKStrategy"
+          parent="abstractActionTransitionStrategy"/>
+
+    <bean id="checkPaymentStatusForSaleOrCaptureWait"
+          class="com.nuvei.order.strategies.checkorderpaymentstatus.NuveiCheckPaymentStatusForSaleOrCaptureWaitStrategy"
+          parent="abstractActionTransitionStrategy"/>
+
+    <bean id="checkPaymentStatusForSaleOrCaptureNOK"
+          class="com.nuvei.order.strategies.checkorderpaymentstatus.NuveiCheckPaymentStatusForSaleOrCaptureNOKStrategy"
+          parent="abstractActionTransitionStrategy"/>
+
+    <bean id="checkPaymentStatusForSaleOrCaptureWAITAmount"
+          class="com.nuvei.order.strategies.checkorderpaymentstatus.NuveiCheckPaymentStatusForSaleOrCaptureWAITAmountStrategy"
+          parent="abstractActionTransitionStrategy"/>
+
+    <bean id="checkPaymentStatusStrategyExecutor"
+          parent="nuveiAbstractStrategyExecutor">
+        <property name="strategies" ref="checkPaymentStatusStrategies"/>
+    </bean>
+
+    <util:list id="checkPaymentStatusStrategies">
+        <ref bean="checkPaymentStatusForSaleOrCaptureOK"/>
+        <ref bean="checkPaymentStatusForSaleOrCaptureWait"/>
+        <ref bean="checkPaymentStatusForSaleOrCaptureNOK"/>
+        <ref bean="checkPaymentStatusForSaleOrCaptureWAITAmount"/>
+    </util:list>
+
+    <!-- Voids -->
+    <alias name="defaultNuveiVoidOrderAction" alias="nuveiVoidOrderAction"/>
+    <bean id="defaultNuveiVoidOrderAction"
+          class="com.nuvei.voids.actions.NuveiVoidOrderAction" parent="abstractAction">
+        <constructor-arg ref="nuveiPaymentTransactionService" name="nuveiPaymentTransactionService"/>
+        <constructor-arg ref="nuveiVoidService" name="nuveiExchangeService"/>
+    </bean>
+
+    <alias name="defaultNuveiCancelNotificationServiceAdapter" alias="nuveiCancelNotificationServiceAdapter"/>
+    <bean id="defaultNuveiCancelNotificationServiceAdapter"
+          class="com.nuvei.voids.adapters.NuveiCancelNotificationServiceAdapter">
+        <constructor-arg ref="eventService"/>
+    </bean>
+
+    <alias name="nuveiImmediateCancelRequestExecutor" alias="immediateCancelRequestExecutor"/>
+    <bean id="nuveiImmediateCancelRequestExecutor"
+          class="de.hybris.platform.ordercancel.impl.executors.ImmediateCancelRequestExecutor"
+          scope="prototype">
+        <property name="modelService" ref="modelService"/>
+        <property name="orderCancelRecordsHandler" ref="orderCancelRecordsHandler"/>
+        <property name="completeCancelStatusChangeStrategy" ref="restorePreviousOrderStatusStrategy"/>
+        <property name="notificationServiceAdapter" ref="nuveiCancelNotificationServiceAdapter"/>
+        <property name="calculationService" ref="calculationService"/>
+    </bean>
+
+    <alias name="defaultNuveiCancelFinishedEventListener" alias="nuveiCancelFinishedEventListener"/>
+    <bean id="defaultNuveiCancelFinishedEventListener"
+          class="com.nuvei.voids.listener.NuveiCancelFinishedEventListener" parent="abstractEventListener">
+        <constructor-arg ref="businessProcessService"/>
+        <constructor-arg ref="modelService"/>
+    </bean>
+
+    <!-- Returns -->
+    <alias name="defaultNuveiCaptureRefundOrderAction" alias="captureRefundAction"/>
+    <bean id="defaultNuveiCaptureRefundOrderAction"
+          class="com.nuvei.returns.actions.NuveiCaptureRefundAction" parent="abstractAction">
+        <constructor-arg name="nuveiExchangeService" ref="nuveiRefundService"/>
+        <constructor-arg name="nuveiPaymentTransactionService" ref="nuveiPaymentTransactionService"/>
+    </bean>
+
+    <alias name="nuveiCreateReturnEventListener" alias="createReturnEventListener"/>
+    <bean id="nuveiCreateReturnEventListener"
+          class="com.nuvei.returns.listeners.NuveiCreateReturnEventListener"
+          parent="abstractEventListener">
+        <constructor-arg ref="baseStoreService"/>
+        <constructor-arg ref="businessProcessService"/>
+        <constructor-arg ref="modelService"/>
+        <constructor-arg name="supportedSiteChannels">
+            <set value-type="de.hybris.platform.commerceservices.enums.SiteChannel">
+                <ref bean="SiteChannel.B2C"/>
+            </set>
+        </constructor-arg>
+    </bean>
+
+    <!-- FRAUD -->
+
+    <alias alias="fraudService" name="defaultNuveiFraudService"/>
+    <bean id="defaultNuveiFraudService" class="de.hybris.platform.fraud.impl.DefaultFraudService">
+        <property name="providers" ref="nuveiFraudProviders"/>
+    </bean>
+
+    <util:list id="nuveiFraudProviders">
+        <ref bean="nuveiFraudProvider"/>
+    </util:list>
+
+    <alias alias="nuveiFraudProvider" name="defaultNuveiFraudProvider"/>
+    <bean id="defaultNuveiFraudProvider"
+          class="de.hybris.platform.fraud.impl.DefaultHybrisFraudServiceProvider">
+        <property name="providerName" value="Hybris"/>
+        <property name="symptomList">
+            <list>
+                <ref bean="nuveiFraudSymptom"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="nuveiFraudSymptom" class="com.nuvei.fraud.impl.NuveiFraudSymptom">
+        <constructor-arg name="fraudSymptomStrategyExecutor" ref="nuveiFraudSymptomStrategyExecutor"/>
+        <property name="symptomName" value="Nuvei Fraud Check"/>
+    </bean>
+
+    <alias alias="nuveiFraudStrategy" name="defaultNuveiFraudStrategy"/>
+    <bean id="defaultNuveiFraudStrategy" class="com.nuvei.fraud.strategies.NuveiFraudStrategy">
+        <property name="symptomName" value="Nuvei fraud check"/>
+        <property name="explanation" value="The authorization has been marked as rejected by Nuvei"/>
+        <property name="increment" value="5000"/>
+    </bean>
+
+    <alias alias="nuveiManualReviewStrategy" name="defaultNuveiManualReviewStrategy"/>
+    <bean id="defaultNuveiManualReviewStrategy" class="com.nuvei.fraud.strategies.NuveiManualReviewStrategy">
+        <property name="symptomName" value="Nuvei fraud check"/>
+        <property name="explanation" value="The authorization has been marked as manual review by Nuvei"/>
+        <property name="increment" value="500"/>
+    </bean>
+
+
+    <bean id="nuveiFraudSymptomStrategyExecutor"
+          parent="nuveiAbstractStrategyExecutor">
+        <property name="strategies" ref="nuveiFraudSymptomStrategies"/>
+    </bean>
+
+    <util:list id="nuveiFraudSymptomStrategies">
+        <ref bean="nuveiFraudStrategy"/>
+        <ref bean="nuveiManualReviewStrategy"/>
+    </util:list>
+</beans>

@@ -1,0 +1,12 @@
+# Specifies the location of the spring context file added automatically to the global platform application context.
+nuveisampledataaddon.application-context=nuveisampledataaddon-spring.xml
+
+yacceleratorstorefront.additionalWebSpringConfigs.nuveisampledataaddon=classpath:/nuveisampledataaddon/web/spring/nuveisampledataaddon-web-spring.xml
+
+nuveisampledataaddon.javascript.paths.responsive=/responsive/common/js/nuveisampledataaddon.js
+nuveisampledataaddon.css.paths.responsive=/responsive/common/css/nuveisampledataaddon.css
+
+nuveisampledataaddon.merchant.secret                            = <CHANGE_ME>
+nuveisampledataaddon.merchant.id                                = <CHANGE_ME>
+nuveisampledataaddon.merchant.electronics.site.id               = <CHANGE_ME>
+nuveisampledataaddon.merchant.appareluk.site.id                 = <CHANGE_ME>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<extensioninfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="extensioninfo.xsd">
+        
+    <extension abstractclassprefix="Generated" classprefix="Nuveiaddon" description="nuveiaddon extension" managername="NuveiaddonManager" managersuperclass="de.hybris.platform.jalo.extension.Extension" name="nuveiaddon">
+                
+        <requires-extension name="addonsupport"/>
+                
+        <requires-extension name="acceleratorstorefrontcommons"/>
+                
+        <requires-extension name="nuveifacades"/>
+                
+        <coremodule generated="true" manager="com.nuvei.addon.jalo.NuveiaddonManager" packageroot="com.nuvei.addon"/>
+                
+        <meta key="classpathgen" value="false"/>
+            
+    </extension>
+    
+</extensioninfo>

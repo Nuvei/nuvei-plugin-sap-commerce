@@ -1,0 +1,22 @@
+INSERT_UPDATE IntegrationObject; code[unique = true]; integrationType(code)
+                               ; InboundCronJobs    ; INBOUND
+
+INSERT_UPDATE IntegrationObjectItem; integrationObject(code)[unique = true]; code[unique = true]; type(code)    ; root[default = false]; itemTypeMatch(code)
+                                   ; InboundCronJobs                       ; Job                ; Job           ;                      ; ALL_SUBTYPES            ;
+                                   ; InboundCronJobs                       ; CronJob            ; CronJob       ; true                 ; ALL_SUB_AND_SUPER_TYPES ;
+                                   ; InboundCronJobs                       ; CronJobStatus      ; CronJobStatus ;                      ; ALL_SUBTYPES            ;
+                                   ; InboundCronJobs                       ; CronJobResult      ; CronJobResult ;                      ; ALL_SUBTYPES            ;
+
+INSERT_UPDATE IntegrationObjectItemAttribute; integrationObjectItem(integrationObject(code), code)[unique = true]; attributeName[unique = true]; attributeDescriptor(enclosingType(code), qualifier); returnIntegrationObjectItem(integrationObject(code), code); unique[default = false]; autoCreate[default = false]
+                                            ; InboundCronJobs:Job                                                ; code                        ; Job:code                                           ;                                                           ; true                   ;
+                                            ; InboundCronJobs:CronJob                                            ; endTime                     ; CronJob:endTime                                    ;                                                           ;                        ;
+                                            ; InboundCronJobs:CronJob                                            ; result                      ; CronJob:result                                     ; InboundCronJobs:CronJobResult                             ;                        ;
+                                            ; InboundCronJobs:CronJob                                            ; job                         ; CronJob:job                                        ; InboundCronJobs:Job                                       ;                        ;
+                                            ; InboundCronJobs:CronJob                                            ; code                        ; CronJob:code                                       ;                                                           ; true                   ;
+                                            ; InboundCronJobs:CronJob                                            ; status                      ; CronJob:status                                     ; InboundCronJobs:CronJobStatus                             ;                        ;
+                                            ; InboundCronJobs:CronJob                                            ; startTime                   ; CronJob:startTime                                  ;                                                           ;                        ;
+                                            ; InboundCronJobs:CronJobStatus                                      ; code                        ; CronJobStatus:code                                 ;                                                           ; true                   ;
+                                            ; InboundCronJobs:CronJobResult                                      ; code                        ; CronJobResult:code                                 ;                                                           ; true                   ;
+
+INSERT_UPDATE InboundChannelConfiguration; integrationObject(code)[unique = true];
+                                         ; InboundCronJobs                       ;

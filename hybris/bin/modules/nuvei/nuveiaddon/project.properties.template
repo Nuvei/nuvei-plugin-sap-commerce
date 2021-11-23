@@ -1,0 +1,10 @@
+# Specifies the location of the spring context file added automatically to the global platform application context.
+nuveiaddon.application-context=nuveiaddon-spring.xml
+
+yacceleratorstorefront.additionalWebSpringConfigs.nuveiaddon=classpath:/nuveiaddon/web/spring/nuveiaddon-web-spring.xml,classpath\:/nuveiaddon/web/spring/b2c-multi-step-nuvei-spring.xml
+
+nuveiaddon.javascript.paths.responsive=/responsive/common/js/nuveiaddon.js;/responsive/common/js/nuveicheckoutsdk.js
+nuveiaddon.css.paths.responsive=/responsive/common/css/nuveiaddon.css
+nuveiaddon.checkout.sdk.js=https://cdn.safecharge.com/safecharge_resources/v1/checkout/checkout.js
+
+yacceleratorstorefront.wro4jconfigscan.checkoutaddon=true

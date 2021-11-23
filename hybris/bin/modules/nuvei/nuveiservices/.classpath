@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="eclipsebin/notused"/>
+
+				
+				
+				
+				
+	<classpathentry exported="true" kind="src" path="/basecommerce" />
+	<classpathentry exported="true" kind="src" path="/commerceservices" />
+	<classpathentry exported="true" kind="lib" path="lib/JUnitParams-1.1.1.jar" />
+	<classpathentry exported="true" kind="lib" path="lib/gson-2.8.8.jar" />
+	<classpathentry exported="true" kind="lib" path="lib/safecharge-sdk-java-1.6.0.jar" />
+	<classpathentry exported="true" kind="lib" path="resources" />
+	<classpathentry exported="true" output="eclipsebin/classes" kind="src" path="src" />
+	<classpathentry exported="true" output="eclipsebin/classes" kind="src" path="testsrc" />
+	<classpathentry exported="true" output="eclipsebin/classes" kind="src" path="gensrc" />
+	<classpathentry exported="false" kind="src" path="/platform" />
+				
+</classpath>
+				

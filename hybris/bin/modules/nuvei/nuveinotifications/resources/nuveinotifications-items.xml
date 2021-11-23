@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+
+<items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			xsi:noNamespaceSchemaLocation="items.xsd">
+
+	<collectiontypes>
+		<collectiontype code="nuveiTransactionTypeList"
+						elementtype="NuveiTransactionType" autocreate="true" generate="true"
+						type="list"/>
+	</collectiontypes>
+	<enumtypes>
+		<enumtype code="NuveiTransactionStatus" dynamic="true">
+			<value code="APPROVED"/>
+			<value code="SUCCESS"/>
+			<value code="DECLINED"/>
+			<value code="ERROR"/>
+			<value code="PENDING"/>
+		</enumtype>
+
+		<enumtype code="NuveiPPPTransactionStatus" dynamic="true">
+			<value code="OK"/>
+			<value code="FAIL"/>
+			<value code="PENDING"/>
+		</enumtype>
+	</enumtypes>
+
+	<itemtypes>
+		<itemtype code="NuveiDirectMerchantNotification">
+			<deployment table="NuveiDMN" typecode="25004"/>
+			<attributes>
+				<attribute qualifier="id" type="java.lang.String">
+					<persistence type="property"/>
+					<modifiers initial="true" optional="false" unique="true"/>
+				</attribute>
+				<attribute qualifier="merchantId" type="java.lang.String">
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="merchantSiteId" type="java.lang.String">
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="pppTransactionId" type="java.lang.String">
+					<persistence type="property"/>
+					<modifiers initial="true" optional="false"/>
+				</attribute>
+				<attribute qualifier="transactionId" type="java.lang.String">
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="transactionType" type="NuveiTransactionType">
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="pppStatus" type="NuveiPPPTransactionStatus">
+					<persistence type="property"/>
+					<modifiers initial="true" optional="false"/>
+				</attribute>
+				<attribute qualifier="status" type="NuveiTransactionStatus">
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="merchantUniqueId" type="java.lang.String">
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="clientUniqueId" type="java.lang.String">
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="clientRequestId" type="java.lang.String">
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="paymentMethod" type="NuveiPaymentMethod">
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="rawNotification" type="java.lang.Object">
+					<persistence type="property">
+						<columntype database="oracle">
+							<value>BLOB</value>
+						</columntype>
+						<columntype>
+							<value>java.io.Serializable</value>
+						</columntype>
+					</persistence>
+					<modifiers initial="true" optional="false"/>
+				</attribute>
+				<attribute qualifier="stringifiedRawNotification" type="java.lang.String">
+					<description>JSON stringified version of the raw notification</description>
+					<persistence type="dynamic" attributeHandler="serializableToJsonAttributeHandler"/>
+					<defaultvalue>""</defaultvalue>
+					<modifiers write="false"/>
+				</attribute>
+				<attribute qualifier="processed" type="java.lang.Boolean">
+					<persistence type="property"/>
+					<defaultvalue>Boolean.FALSE</defaultvalue>
+				</attribute>
+				<attribute qualifier="defective" type="java.lang.Boolean">
+					<persistence type="property"/>
+					<defaultvalue>Boolean.FALSE</defaultvalue>
+				</attribute>
+				<attribute qualifier="defectiveReason" type="java.lang.String">
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="notified" type="java.lang.Boolean">
+					<persistence type="property"/>
+					<defaultvalue>Boolean.FALSE</defaultvalue>
+				</attribute>
+				<attribute qualifier="totalAmount" type="java.math.BigDecimal">
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="currency" type="currency">
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="systemDecision" type="SystemDecisionEnum">
+					<description>The fraud system decision</description>
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="finalFraudDecision" type="FinalFraudDecisionEnum">
+					<description>The final fraud decision</description>
+					<persistence type="property"/>
+				</attribute>
+				<attribute qualifier="relatedTransactionId" type="java.lang.String">
+					<persistence type="property"/>
+				</attribute>
+			</attributes>
+			<indexes>
+				<index name="ClientIdIdx" unique="false">
+					<key attribute="clientUniqueId"/>
+				</index>
+			</indexes>
+		</itemtype>
+
+		<typegroup name="Cronjob">
+			<itemtype code="NuveiProcessNotificationsCronjob"
+					  extends="Cronjob"
+					  autocreate="true"
+					  generate="true">
+				<attributes>
+					<attribute qualifier="nuveiNotificationTypes" type="NuveiTransactionTypeList">
+						<description>
+							Will store the NuveiTransactionTypes that the job will process,
+							an empty set force the job to process all the NuveiTransactionTypes
+						</description>
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+			</itemtype>
+			<itemtype code="NuveiCleanOldNotificationsCronJob"
+					  extends="Cronjob"
+					  autocreate="true"
+					  generate="true">
+			</itemtype>
+		</typegroup>
+	</itemtypes>
+</items>

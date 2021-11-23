@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <alias name="defaultNuveiBlockedCardsPopulator" alias="nuveiBlockedCardsPopulator"/>
+    <bean name="defaultNuveiBlockedCardsPopulator" class="com.nuvei.facades.converters.populators.NuveiBlockedCardsPopulator"/>
+
+    <alias name="defaultNuveiBlockedCardsConverter" alias="nuveiBlockedCardsConverter"/>
+    <bean id="defaultNuveiBlockedCardsConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="com.nuvei.facades.beans.NuveiBlockedCardsData"/>
+        <property name="populators">
+            <list>
+                <ref bean="nuveiBlockedCardsPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultNuveiPaymentInfoReversePopulator" alias="nuveiPaymentInfoReversePopulator"/>
+    <bean name="defaultNuveiPaymentInfoReversePopulator"
+          class="com.nuvei.facades.converters.populators.NuveiPaymentInfoReversePopulator"/>
+
+    <alias name="defaultNuveiPaymentInfoReverseConverter" alias="nuveiPaymentInfoReverseConverter"/>
+    <bean id="defaultNuveiPaymentInfoReverseConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="com.nuvei.services.model.NuveiPaymentInfoModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="nuveiPaymentInfoReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultNuveiPaymentInfoDataPopulator" alias="nuveiPaymentInfoDataPopulator"/>
+    <bean name="defaultNuveiPaymentInfoDataPopulator"
+          class="com.nuvei.facades.converters.populators.NuveiPaymentInfoDataPopulator">
+        <constructor-arg name="addressConverter" ref="addressConverter"/>
+    </bean>
+
+    <alias name="defaultNuveiPaymentInfoDataConverter" alias="nuveiPaymentInfoDataConverter"/>
+    <bean id="defaultNuveiPaymentInfoDataConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="de.hybris.platform.commercefacades.order.data.CCPaymentInfoData"/>
+        <property name="populators">
+            <list>
+                <ref bean="nuveiPaymentInfoDataPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultNuveiPaymentInfoOrderPopulator" alias="nuveiPaymentInfoOrderPopulator"/>
+    <bean name="defaultNuveiPaymentInfoOrderPopulator"
+          class="com.nuvei.facades.converters.populators.NuveiPaymentInfoOrderPopulator">
+        <constructor-arg name="nuveiPaymentInfoDataConverter" ref="nuveiPaymentInfoDataConverter"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="orderConverter"/>
+        <property name="add" ref="nuveiPaymentInfoOrderPopulator"/>
+    </bean>
+</beans>

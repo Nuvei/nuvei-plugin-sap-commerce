@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<process xmlns="http://www.hybris.de/xsd/processdefinition" start="sendVoidCommand" name="void-process"
+         processClass="com.nuvei.model.NuveiVoidProcessModel">
+
+    <action id="sendVoidCommand" bean="nuveiVoidOrderAction">
+        <transition name="OK" to="end"/>
+        <transition name="NOK" to="failed"/>
+        <transition name="WAIT" to="waitFor_VOID"/>
+    </action>
+
+    <wait id="waitFor_VOID" then="sendVoidCommand" prependProcessCode="false">
+        <event>${process.code}_VOID</event>
+    </wait>
+
+    <end id="end" state="SUCCEEDED">Success</end>
+    <end id="failed" state="FAILED">Void failed.</end>
+
+</process>

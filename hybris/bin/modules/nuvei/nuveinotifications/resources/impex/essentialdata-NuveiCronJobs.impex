@@ -1,0 +1,15 @@
+INSERT_UPDATE ServicelayerJob; code[unique = true]           ; springId
+                             ; nuveiProcessNotificationsJob  ; nuveiProcessNotificationsJob
+                             ; nuveiCleanOldNotificationsJob ; nuveiCleanOldNotificationsJob
+
+INSERT_UPDATE NuveiProcessNotificationsCronjob; code[unique = true]              ; job(code);sessionLanguage(isoCode)[default=en]
+                                              ; nuveiProcessNotificationsCronJob ; nuveiProcessNotificationsJob
+
+INSERT_UPDATE NuveiCleanOldNotificationsCronJob; code[unique = true]               ; job(code);sessionLanguage(isoCode)[default=en]
+                     ; nuveiCleanOldNotificationsCronJob ; nuveiCleanOldNotificationsJob
+
+#% if: "true".equalsIgnoreCase(Config.getParameter("nuveinotifications.cronjobs.triggers.enabled"));
+INSERT Trigger; cronjob(code)[unique = true]      ; cronExpression
+              ; nuveiProcessNotificationsCronJob  ; 0 0/5 * 1/1 * ? *
+              ; nuveiCleanOldNotificationsCronJob ; 0 0 0 1/1 * ? *
+#% endif:

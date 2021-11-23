@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<extensioninfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="extensioninfo.xsd">
+        
+    <extension abstractclassprefix="Generated" classprefix="Nuveisampledataaddon" description="nuveisampledataaddon extension" managername="NuveisampledataaddonManager" managersuperclass="de.hybris.platform.jalo.extension.Extension" name="nuveisampledataaddon">
+                
+        <requires-extension name="addonsupport"/>
+                
+        <coremodule generated="true" manager="com.nuvei.sampledataaddon.jalo.NuveisampledataaddonManager" packageroot="com.nuvei.sampledataaddon"/>
+                
+        <meta key="classpathgen" value="false"/>
+            
+    </extension>
+    
+</extensioninfo>

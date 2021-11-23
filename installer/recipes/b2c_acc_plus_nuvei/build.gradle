@@ -1,0 +1,192 @@
+apply plugin: 'installer-platform-plugin'
+apply plugin: 'installer-addon2-plugin'
+
+def pl = platform {
+    localProperties {
+        property 'recaptcha.publickey', ''
+        property 'recaptcha.privatekey', ''
+        property 'googleApiKey', ''
+        property 'csrf.allowed.url.patterns', '/[^/]+(/[^?]*)+(sop/response)$,/[^/]+(/[^?]*)+(merchant_callback)$,/[^/]+(/[^?]*)+(hop/response)$,/[^/]+(/[^?]*)+(language)$,/[^/]+(/[^?]*)+(currency)$,/(events)$'
+        // Adding colorized logs
+        property 'ansi.colors', 'true'
+
+        // Use the <CHANGE_ME> approach from https://help.sap.com/viewer/b490bb4e85bc42a7aa09d513d0bcb18e/2011/en-US/8b8e13c9866910149d40b151a9196543.html
+        // Left as `insert your secret key` so it does not prevent the system to set up and build.
+        // TODO
+    }
+
+    afterSetup {
+        ensureAdminPasswordSet()
+    }
+
+    extensions {
+        extName 'adaptivesearchsolr'
+        extName 'adaptivesearchbackoffice'
+        extName 'adaptivesearchsamplesaddon'
+        extName 'adaptivesearchwebservices'
+        extName 'commerceservicesbackoffice'
+        extName 'solrfacetsearchbackoffice'
+        extName 'solrserver'
+
+        extName 'yacceleratorstorefront'
+        extName 'commercewebservices'
+
+        extName 'electronicsstore'
+
+        extName 'captchaaddon'
+        extName 'acceleratorocc'
+        extName 'orderselfserviceaddon'
+
+        extName 'rulebuilderbackoffice'
+        extName 'couponbackoffice'
+
+        extName 'droolsruleengineservices'
+        extName 'couponfacades'
+        extName 'couponservices'
+
+        extName 'promotionenginesamplesaddon'
+
+        extName 'assistedservicestorefront'
+        extName 'assistedservicewebservices'
+        extName 'assistedserviceyprofileaddon'
+        extName 'assistedservicecustomerinterestsaddon'
+        extName 'assistedservicepromotionaddon'
+
+        extName 'customerticketingaddon'
+        extName 'customersupportbackoffice'
+        extName 'profileservices'
+
+        extName 'textfieldconfiguratortemplatebackoffice'
+        extName 'textfieldconfiguratortemplateaddon'
+
+        extName 'cmswebservices'
+        extName 'smarteditwebservices'
+
+        extName 'cmssmarteditwebservices'
+        extName 'permissionswebservices'
+
+        extName 'smarteditaddon'
+        extName 'cmssmartedit'
+
+        extName 'cmsbackoffice'
+        extName 'cmsocc'
+        extName 'consignmenttrackingaddon'
+        extName 'consignmenttrackingmock'
+        extName 'consignmenttrackingbackoffice'
+
+        extName 'notificationaddon'
+        extName 'customerinterestsaddon'
+        extName 'stocknotificationaddon'
+
+        extName 'configurablebundleaddon'
+
+        extName 'previewpersonalizationweb'
+        extName 'personalizationcmsweb'
+
+        extName 'personalizationsmartedit'
+        extName 'personalizationpromotionssmartedit'
+        extName 'personalizationsampledataaddon'
+        extName 'personalizationpromotionssampledataaddon'
+
+        extName 'personalizationyprofile'
+        extName 'personalizationpromotions'
+        extName 'personalizationpromotionsweb'
+        extName 'personalizationservicesbackoffice'
+        extName 'personalizationpromotionsbackoffice'
+        extName 'personalizationcmsbackoffice'
+        extName 'personalizationintegrationbackoffice'
+        extName 'personalizationsearchbackoffice'
+        extName 'personalizationsearchsmartedit'
+        extName 'personalizationsearchweb'
+        extName 'personalizationyprofilesampledataaddon'
+        extName 'personalizationaddon'
+
+        extName 'pcmbackofficesamplesaddon'
+
+        extName 'xyformsbackoffice'
+        extName 'xyformsstorefrontcommons'
+        extName 'xyformssamples'
+        extName 'xyformsweb'
+        extName 'platformbackoffice'
+        extName 'orbeonweb'
+
+        extName 'consignmenttrackingocc'
+
+        extName 'customerinterestsocc'
+        extName 'notificationocc'
+        extName 'kymaintegrationbackoffice'
+        extName 'outboundservices'
+        extName 'outboundsync'
+        extName 'odata2webservices'
+        extName 'odata2webservicesfeaturetests'
+        extName 'integrationbackoffice'
+        extName 'integrationmonitoringbackoffice'
+
+        extName 'outboundsyncbackoffice'
+
+        extName 'merchandisingaddon'
+        extName 'merchandisingcmswebservices'
+        extName 'merchandisingsmartedit'
+        extName 'merchandisingservices'
+        extName 'merchandisingservicesbackoffice'
+        extName 'merchandisingstorefrontsampledataaddon'
+        extName 'mediaconversion'
+
+        /* Nuvei extensions*/
+         extName 'nuveiaddon'
+         extName 'nuveiservices'
+         extName 'nuveifacades'
+         extName 'nuveibackoffice'
+         extName 'nuveisampledataaddon'
+         extName 'nuveinotifications'
+         extName 'nuveifulfilment'
+    }
+
+    addons {
+        forStoreFronts('yacceleratorstorefront') {
+            names('captchaaddon', 'promotionenginesamplesaddon', 'assistedservicestorefront', 'assistedservicecustomerinterestsaddon',
+                    'assistedserviceyprofileaddon', 'assistedservicepromotionaddon', 'customerticketingaddon', 'textfieldconfiguratortemplateaddon', 'smarteditaddon',
+                    'consignmenttrackingaddon', 'notificationaddon', 'customerinterestsaddon', 'stocknotificationaddon', 'orderselfserviceaddon', 'adaptivesearchsamplesaddon',
+                    'configurablebundleaddon', 'pcmbackofficesamplesaddon', 'xyformssamples', 'xyformsstorefrontcommons',
+                    'personalizationyprofilesampledataaddon', 'personalizationaddon', 'merchandisingaddon', 'merchandisingstorefrontsampledataaddon',
+                    'nuveiaddon')
+            template 'yacceleratorstorefront'
+        }
+    }
+}
+
+task setup {
+    doLast {
+        pl.setup()
+    }
+}
+
+task buildSystem(dependsOn: setup) {
+    doLast {
+        pl.build()
+    }
+}
+
+task initialize(dependsOn: buildSystem) {
+    doLast {
+        pl.initialize()
+    }
+}
+
+task start {
+    doLast {
+        pl.start()
+    }
+}
+
+task startInBackground {
+    doLast {
+        pl.startInBackground()
+    }
+}
+
+task stopInBackground {
+    doLast {
+        pl.stopInBackground()
+    }
+}

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/util
+           http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+    <alias name="defaultNuveiDMNFacade" alias="nuveiDMNFacade"/>
+    <bean id="defaultNuveiDMNFacade"
+          class="com.nuvei.notifications.facades.impl.DefaultNuveiDMNFacade">
+        <constructor-arg name="nuveiIncomingDMNDataNuveiDirectMerchantNotificationModelConverter"
+                         ref="nuveiIncomingDMNDataNuveiDirectMerchantNotificationModelConverter"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="idGenerator" ref="dmnCodeGenerator"/>
+    </bean>
+
+    <alias name="defaultNuveiDMNPopulator" alias="nuveiDMNPopulator"/>
+    <bean name="defaultNuveiDMNPopulator" class=" com.nuvei.notifications.populators.NuveiDMNPopulator">
+        <constructor-arg name="enumerationService" ref="enumerationService"/>
+        <constructor-arg name="nuveiPaymentMethodService" ref="nuveiPaymentMethodService"/>
+        <constructor-arg name="commonI18NService" ref="commonI18NService"/>
+    </bean>
+
+    <alias name="defaultNuveiIncomingDMNDataNuveiDirectMerchantNotificationModelConverter"
+           alias="nuveiIncomingDMNDataNuveiDirectMerchantNotificationModelConverter"/>
+    <bean id="defaultNuveiIncomingDMNDataNuveiDirectMerchantNotificationModelConverter"
+          parent="abstractPopulatingConverter">
+        <property name="targetClass" value="com.nuvei.notifications.model.NuveiDirectMerchantNotificationModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="nuveiDMNPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <!-- order -->
+    <bean id="dmnCodeGenerator" class="de.hybris.platform.servicelayer.keygenerator.impl.PersistentKeyGenerator">
+        <property name="key" value="${keygen.dmn.code.name}"/>
+        <property name="digits" value="${keygen.dmn.code.digits}"/>
+        <property name="start" value="${keygen.dmn.code.start}"/>
+        <property name="type" value="${keygen.dmn.code.type}"/>
+        <property name="template" value="${keygen.dmn.code.template}"/>
+    </bean>
+
+    <alias name="defaultNuveiDMNService" alias="nuveiDMNService"/>
+    <bean id="defaultNuveiDMNService" class="com.nuvei.notifications.core.services.impl.DefaultNuveiDMNService">
+        <constructor-arg ref="nuveiDMNDao" name="nuveiDMNDao"/>
+    </bean>
+
+    <alias name="defaultNuveiNotificationsProcessService" alias="nuveiNotificationsProcessService"/>
+    <bean id="defaultNuveiNotificationsProcessService"
+          class="com.nuvei.notifications.core.services.impl.DefaultNuveiNotificationsProcessService">
+        <constructor-arg name="nuveiDMNService" ref="nuveiDMNService"/>
+        <constructor-arg name="nuveiPaymentTransactionService" ref="nuveiPaymentTransactionService"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="triggerEventOrderProcessStrategyExecutor" ref="triggerEventOrderProcessStrategyExecutor"/>
+        <constructor-arg name="orderTransactionTypeStrategyExecutor" ref="orderTransactionTypeStrategyExecutor"/>
+    </bean>
+
+    <alias name="defaultProcessDefinitionDao" alias="processDefinitionDao"/>
+    <bean id="defaultProcessDefinitionDao" parent="abstractItemDao"
+          class="com.nuvei.notifications.dao.impl.DefaultProcessDefinitionDao"/>
+
+    <alias name="defaultNuveiProcessNotificationsJob" alias="nuveiProcessNotificationsJob"/>
+	<bean id="defaultNuveiProcessNotificationsJob" parent="abstractJobPerformable"
+		  class="com.nuvei.notifications.jobs.NuveiProcessNotificationsJob">
+		<constructor-arg name="nuveiNotificationsProcessService" ref="nuveiNotificationsProcessService"/>
+	</bean>
+
+	<alias name="defaultNuveiCleanOldNotificationsJob" alias="nuveiCleanOldNotificationsJob"/>
+	<bean id="defaultNuveiCleanOldNotificationsJob" parent="abstractJobPerformable"
+		  class="com.nuvei.notifications.jobs.NuveiCleanOldNotificationsJob">
+		<constructor-arg name="nuveiDMNService" ref="nuveiDMNService"/>
+	</bean>
+
+	<alias name="defaultNuveiDMNDao" alias="nuveiDMNDao"/>
+    <bean id="defaultNuveiDMNDao" class="com.nuvei.notifications.dao.impl.DefaultNuveiDMNDao">
+        <property ref="configurationService" name="configurationService"/>
+    </bean>
+
+    <bean id="nuveiAbstractTriggerEventOrderProcessStrategy"
+          class="com.nuvei.notifications.strategies.NuveiAbstractTriggerEventOrderProcessStrategy" abstract="true">
+        <constructor-arg name="businessProcessService" ref="businessProcessService"/>
+        <constructor-arg name="processDefinitionDao" ref="processDefinitionDao"/>
+    </bean>
+
+    <bean id="triggerEventOrderProcessCapturedStrategy"
+          class="com.nuvei.notifications.strategies.paymenttypes.NuveiTriggerEventOrderProcessCapturedStrategy"
+          parent="nuveiAbstractTriggerEventOrderProcessStrategy"/>
+
+    <bean id="avoidTriggerEventOrderProcessStrategy"
+          class="com.nuvei.notifications.strategies.paymenttypes.NuveiAvoidTriggerEventOrderProcessStrategy"
+          parent="nuveiAbstractTriggerEventOrderProcessStrategy"/>
+
+    <bean id="triggerEventOrderProcessDefaultStrategy"
+          class="com.nuvei.notifications.strategies.paymenttypes.NuveiTriggerEventOrderProcessDefaultStrategy"
+          parent="nuveiAbstractTriggerEventOrderProcessStrategy"/>
+
+    <bean id="triggerEventOrderProcessSaleStrategy"
+          class="com.nuvei.notifications.strategies.paymenttypes.NuveiTriggerEventOrderProcessSaleStrategy"
+          parent="nuveiAbstractTriggerEventOrderProcessStrategy"/>
+
+    <bean id="triggerEventOrderProcessVoidStrategy"
+          class="com.nuvei.notifications.strategies.paymenttypes.NuveiTriggerEventOrderProcessVoidStrategy"
+          parent="nuveiAbstractTriggerEventOrderProcessStrategy">
+        <constructor-arg name="nuveiOrderService" ref="nuveiOrderService"/>
+    </bean>
+
+    <bean id="triggerEventOrderProcessRefundStrategy"
+          class="com.nuvei.notifications.strategies.paymenttypes.NuveiTriggerEventOrderProcessRefundStrategy"
+          parent="nuveiAbstractTriggerEventOrderProcessStrategy">
+    </bean>
+
+    <bean id="triggerEventOrderProcessStrategyExecutor"
+          parent="nuveiAbstractStrategyExecutor">
+        <property name="strategies" ref="eventPaymentTypeStrategies"/>
+    </bean>
+
+    <util:list id="eventPaymentTypeStrategies">
+        <ref bean="avoidTriggerEventOrderProcessStrategy"/>
+        <ref bean="triggerEventOrderProcessCapturedStrategy"/>
+        <ref bean="triggerEventOrderProcessSaleStrategy"/>
+        <ref bean="triggerEventOrderProcessVoidStrategy"/>
+        <ref bean="triggerEventOrderProcessRefundStrategy"/>
+        <ref bean="triggerEventOrderProcessDefaultStrategy"/>
+    </util:list>
+
+    <bean id="orderClientUniqueIdByTypeStrategy"
+          class="com.nuvei.notifications.strategies.orders.NuveiOrderClientUniqueIdByTypeStrategy">
+        <constructor-arg name="nuveiOrderService" ref="nuveiOrderService"/>
+    </bean>
+
+    <bean id="orderRequestIdByTypeStrategy"
+          class="com.nuvei.notifications.strategies.orders.NuveiOrderRequestIdByTypeStrategy">
+        <constructor-arg name="nuveiPaymentTransactionEntryService" ref="nuveiPaymentTransactionEntryService"/>
+    </bean>
+
+    <bean id="orderClientRequestIdByTypeStrategy"
+          class="com.nuvei.notifications.strategies.orders.NuveiOrderClientRequestIdByTypeStrategy">
+        <constructor-arg name="nuveiPaymentTransactionEntryService" ref="nuveiPaymentTransactionEntryService"/>
+    </bean>
+
+    <bean id="orderTransactionTypeStrategyExecutor"
+          parent="nuveiAbstractStrategyExecutor">
+        <property name="strategies" ref="orderTransactionTypeStrategies"/>
+    </bean>
+
+    <util:list id="orderTransactionTypeStrategies">
+        <ref bean="orderClientUniqueIdByTypeStrategy"/>
+        <ref bean="orderRequestIdByTypeStrategy"/>
+        <ref bean="orderClientRequestIdByTypeStrategy"/>
+    </util:list>
+</beans>

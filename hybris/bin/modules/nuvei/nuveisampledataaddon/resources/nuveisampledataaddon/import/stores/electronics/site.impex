@@ -1,0 +1,21 @@
+$productCatalog = electronicsProductCatalog
+$contentCatalog = electronicsContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+$lang = en
+$storeUid = electronics
+$siteUid = electronics
+
+UPDATE GenericItem[processor = de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor]; pk[unique = true]
+
+$secret = $config-nuveisampledataaddon.merchant.secret
+$merchantId = $config-nuveisampledataaddon.merchant.id
+$merchantSiteId = $config-nuveisampledataaddon.merchant.electronics.site.id
+
+
+INSERT_UPDATE NuveiMerchantConfiguration; code[unique = true]    ; merchantId  ; merchantSiteId  ; merchantSecretKey; payButton(code); logLevel(code); env(code); savePM; hashAlgorithm(code); serverHost;
+                                        ; $siteUidMerchantConfig ; $merchantId ; $merchantSiteId ; $secret          ; amountButton   ; VALUE_0       ; int      ; TRUE  ; SHA256             ; "https://ppp-test.safecharge.com/ppp/"
+
+
+# CMS Site
+INSERT_UPDATE CMSSite; uid[unique = true]; nuveiMerchantConfiguration(code)
+                     ; $siteUid          ; $siteUidMerchantConfig
